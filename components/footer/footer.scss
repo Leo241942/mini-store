@@ -1,0 +1,149 @@
+footer
+{   
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000000;
+ 
+    .promotion_banner
+    {
+        width: 100%;
+        height: 500px;
+        background-image: url('../../image/promotion_banner.jpg') ;
+        background-size: cover;
+        background-position: center ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .content_banner
+        {
+            display: flex;
+            justify-content: space-evenly;
+            
+            .text_banner
+            {
+                max-width: 400px;
+                line-height: 50px;
+
+                .title
+                {
+                    font-size: 45px;
+                    color: white;
+                }
+
+                .description
+                {
+                    color: #747474;
+                    font-size: 16px;
+                }
+            }
+
+            .form_sale
+            {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                max-width: 400px;
+                width: 100%;
+                box-sizing: border-box;
+               
+                input
+                {
+                    outline: none;
+                    padding: 10px 20px;
+                }
+
+                button{
+                    background-color: transparent;
+                    padding: 20px 30px;
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    border-radius: 6px;
+                    border: none;
+                    background-color: #000000;
+                    color: #ffffff;
+                    transition: 0.3s;
+                    border: 1px solid black;
+                    width: 100%;
+                  
+                    &:hover {
+                        background-color:#747474;
+                        
+                    }  
+                }
+            }
+
+        }
+    }
+
+
+    .content_footer
+    {
+        padding: 30px 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        color: white;
+
+        .container_socialNetwork
+        {
+            display: flex;
+            flex-direction: column;
+            
+            
+
+            .logo
+            {
+                text-transform: uppercase;
+                font-size: 50px;
+                color: white;
+            }
+            .social_network
+            {
+                display: flex;
+                justify-content: space-between;
+                
+                i
+                {
+                    color: white;
+                    font-size: 19px;
+                }
+            }
+        }
+
+
+        .footer_menuContainer
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+
+            .footer_menu
+            {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                .title
+                {
+                    font-size: 16px;
+                    color: white;
+                    text-transform: uppercase;
+                }
+    
+                li
+                {
+                    a{
+                        font-size: 14px;
+                    color: #a1a1a1;
+                    }
+                }
+            }
+        }
+       
+    }
+
+}

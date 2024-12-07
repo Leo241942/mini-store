@@ -1,0 +1,105 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000000;
+}
+footer .promotion_banner {
+  width: 100%;
+  height: 500px;
+  background-image: url("../../image/promotion_banner.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .promotion_banner .content_banner {
+  display: flex;
+  justify-content: space-evenly;
+}
+footer .promotion_banner .content_banner .text_banner {
+  max-width: 400px;
+  line-height: 50px;
+}
+footer .promotion_banner .content_banner .text_banner .title {
+  font-size: 45px;
+  color: white;
+}
+footer .promotion_banner .content_banner .text_banner .description {
+  color: #747474;
+  font-size: 16px;
+}
+footer .promotion_banner .content_banner .form_sale {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+}
+footer .promotion_banner .content_banner .form_sale input {
+  outline: none;
+  padding: 10px 20px;
+}
+footer .promotion_banner .content_banner .form_sale button {
+  background-color: transparent;
+  padding: 20px 30px;
+  text-transform: uppercase;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  transition: 0.3s;
+  border: 1px solid black;
+  width: 100%;
+}
+footer .promotion_banner .content_banner .form_sale button:hover {
+  background-color: #747474;
+}
+footer .content_footer {
+  padding: 30px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  color: white;
+}
+footer .content_footer .container_socialNetwork {
+  display: flex;
+  flex-direction: column;
+}
+footer .content_footer .container_socialNetwork .logo {
+  text-transform: uppercase;
+  font-size: 50px;
+  color: white;
+}
+footer .content_footer .container_socialNetwork .social_network {
+  display: flex;
+  justify-content: space-between;
+}
+footer .content_footer .container_socialNetwork .social_network i {
+  color: white;
+  font-size: 19px;
+}
+footer .content_footer .footer_menuContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+footer .content_footer .footer_menuContainer .footer_menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+footer .content_footer .footer_menuContainer .footer_menu .title {
+  font-size: 16px;
+  color: white;
+  text-transform: uppercase;
+}
+footer .content_footer .footer_menuContainer .footer_menu li a {
+  font-size: 14px;
+  color: #a1a1a1;
+}/*# sourceMappingURL=footer.css.map */
