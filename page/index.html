@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,151 @@
     <link rel="stylesheet" href="../styles/index/index.css">
     <link rel="stylesheet" href="../styles/root/root.css">
 </head>
+
 <body>
-    
+    <header>
+        <div class="container_width">
+            <div class="header_content">
+                <div class="logo_container">
+                    <a class="logo">uniclub</a>
+                    <nav>
+                        <ul>
+                            <li><a href="#">home</a></li>
+                            <li><a href="#">shop</a></li>
+                            <li><a href="#">about</a></li>
+                            <li><a href="#">sale</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="controls">
+                    <a href="#"><i class="ri-user-fill"></i></a>
+                    <a href="#"><i class="ri-heart-fill"></i></a>
+                    <a href="#" id="cart-icon"><i class="ri-shopping-cart-2-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="cart_open" id="cart_open">
+        <div class="header_cart">
+            <p class="title">Your cart</p>
+            <p class="count">3</p>
+        </div>
+
+        <div class="product_list">
+            <ul>
+                <!-- item template -->
+                <li class="item_product">
+                    <div class="info">
+                        <p class="name">Grey Hoodie</p>
+                        <p class="description">Brief description</p>
+                    </div>
+                    <p class="price">$50</p>
+                </li>
+                <!-- copies of elements -->
+                <li class="item_product">
+                    <div class="info">
+                        <p class="name">Grey Hoodie</p>
+                        <p class="description">Brief description</p>
+                    </div>
+                    <p class="price">$100</p>
+                </li>
+                <li class="item_product">
+                    <div class="info">
+                        <p class="name">Grey Hoodie</p>
+                        <p class="description">Brief description</p>
+                    </div>
+                    <p class="price">$100</p>
+                </li>
+                <!-- copies of elements -->
+                <li class="total_price">
+                    <p class="title">Total (USD)</p>
+                    <p class="price">$250</p>
+                </li>
+            </ul>
+
+        </div>
+        <form action="#">
+            <button class="btn_continue">Continue to checkout</button>
+        </form>
+    </div>
+
+    <div class="blackout" id="blackout"></div>
+
+    <main>
+        <section class="start_shopping">
+            <div class="container_width">
+                <div class="promo_banner">
+                    <p class="title">Street Wears</p>
+                    <p class="description">High quality cool tshirts for street fashion</p>
+                    <button class="btn_StartShopoing">start shopping <i class="ri-arrow-right-line"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="our_advantages">
+            <div class="container_width">
+                <div class="container_adantages">
+                    <div class="item_adantages">
+                        <i class="ri-shopping-cart-2-line"></i>
+                        <p class="title">Free Delivery</p>
+                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    </div>
+                    <div class="item_adantages">
+                        <i class="ri-shield-check-line"></i>
+                        <p class="title">100% secure payment</p>
+                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    </div>
+                    <div class="item_adantages">
+                        <i class="ri-medal-line"></i>
+                        <p class="title">Quality guarantee</p>
+                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    </div>
+                    <div class="item_adantages">
+                        <i class="ri-money-dollar-circle-line"></i>
+                        <p class="title">Daily Offer</p>
+                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="new_arrivals">
+            <div class="container_width">
+                <p class="title">New Arrivals</p>
+                <div class="listing_container">
+                    <div class="listing">
+
+                        <!-- item template -->
+                        <div class="item_arrivals">
+                            <!-- image tag and controls -->
+                            <div class="img_container">
+                                <img src="../image/item1.jpg" alt="">
+                                <div class="tag">sale</div>
+                                <div class="controls">
+                                    <a href="#" class="add_cart">add to cart <i class="ri-arrow-right-line"></i> </a>
+                                    <a href="#"><i class="ri-expand-diagonal-line"></i></a>
+                                    <a href="#"><i class="ri-heart-add-line"></i></a>
+                                </div>
+                            </div>
+                            <!-- info arrivals -->
+                            <div class="info">
+                                <p class="name">Seven Zero Five</p>
+                                <p class="price">$40.00</p>
+                            </div>
+                        </div>
+                        <!-- copies of elements -->
+                     
+                        <!-- copies of elements -->
+                    </div>
+                    <button class="btn_allProduct">View All Products</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="../js/index/index.js"></script>
 </body>
+
 </html>
