@@ -69,11 +69,6 @@
                                 require "../components/item_arrivals/item_arrivals.php" ;  
                             }
                         ?>
-                     
-
-                        <!-- copies of elements -->
-                    
-                        <!-- copies of elements -->
                     </div>
                     <button class="btn_allProduct">View All Products</button>
                 </div>

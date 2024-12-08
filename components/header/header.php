@@ -6,10 +6,10 @@
                 <a class="logo">uniclub</a>
                 <nav>
                     <ul>
-                        <li><a href="#">home</a></li>
-                        <li><a href="#">shop</a></li>
+                        <li><a href="index.php">home</a></li>
+                        <li><a href="catalog.php">shop</a></li>
                         <li><a href="#">about</a></li>
-                        <li><a href="#">sale</a></li>
+                        <li><a href="template_product.php">template</a></li>
                     </ul>
                 </nav>
             </div>

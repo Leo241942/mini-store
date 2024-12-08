@@ -1,5 +1,4 @@
 header {
-    position: fixed;
     width: 100%;
     box-sizing: border-box;
     padding: 10px 0px;
@@ -7,14 +6,8 @@ header {
     z-index: 10;
     display: flex;
     justify-content: center;
-    height:var(--header-heigth);
     transition: background-color 0.3s ease;
-
-    &.active {
-        background-color: #f8f8f8;
-     
-
-    }
+    background-color: #f8f8f8;
 }
 
 

@@ -1,16 +1,3 @@
-// header bg scroll
-document.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('header');
-    const scrollThreshold = 130;
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY >= scrollThreshold) {
-            header.classList.add('active');
-        } else {
-            header.classList.remove('active');
-        }
-    });
-});
 
 // cart open\close 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,6 +1,8 @@
 @charset "UTF-8";
+/* импорт шрифтов */
 @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap");
+/* импорт библиотеки иконок */
 @import url("https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css");
 * {
   padding: 0;
@@ -8,16 +10,24 @@
   font-family: "Jost", sans-serif;
 }
 
-/*          font-family: 'Jost', sans-serif; */
-/* импорт шрифтов */
-/* импорт библиотеки иконок */
 a {
   text-decoration: none;
   color: black;
 }
 
-ul li {
+li {
   list-style: none;
+}
+
+/* delete arrows input number */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 :root {
@@ -42,5 +52,6 @@ main {
 .container_width {
   max-width: var(--max-width);
   width: 100%;
+  margin: 0 auto;
   box-sizing: border-box;
 }/*# sourceMappingURL=root.css.map */
