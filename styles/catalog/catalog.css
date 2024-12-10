@@ -61,6 +61,13 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
+.catalog .listing_container .header_listing .sort {
+  display: flex;
+  gap: 15px;
+}
+.catalog .listing_container .header_listing .sort .product_sort {
+  border: none;
+}
 .catalog .listing_container .listing {
   display: flex;
   flex-direction: row;
@@ -69,15 +76,12 @@ body {
 }
 .catalog .listing_container .pagination {
   margin: auto;
-}
-.catalog .listing_container .pagination .pages {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
   max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
 }
-.catalog .listing_container .pagination .pages .pagination_element {
+.catalog .listing_container .pagination .pagination_element {
   font-size: 20px;
   font-weight: bold;
   color: #747474;

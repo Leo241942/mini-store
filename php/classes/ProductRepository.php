@@ -92,7 +92,18 @@ class ProductRepository
         return !empty($productColors) ? $productColors : null; // Если данных нет, возвращаем null
     }
 
+   
+
+    public function getTotalProductCount() {
+        $sql = "SELECT COUNT(*) FROM products";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchColumn();
+    }
+
     
+    
+
+
     
 }
 
