@@ -1,3 +1,20 @@
+<?php
+
+require_once '../php/classes/ProductRepository.php';
+require_once '../php/classes/CartRepository.php';
+require_once '../php/connect.php';
+
+
+// Создаем экземпляр класса ProductRepository
+$ProductRepository = new ProductRepository($pdo);
+
+// Получаем все карточки товаров
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,7 +82,16 @@
 
                         <!-- item template -->
                         <?php  
-                            for ($i = 0; $i != 8; $i++) {
+
+                        $products = $ProductRepository->getProductCards(8);
+
+                            foreach ($products as $product) {
+                                $cover = $product['cover']; 
+                                $tags = $product['tags']; 
+                                $name = $product['product_name'];
+                                $price = $product['price'];
+                                $discountPrice = $product['discount_price']; 
+                                $productId = $product['id']; 
                                 require "../components/item_arrivals/item_arrivals.php" ;  
                             }
                         ?>

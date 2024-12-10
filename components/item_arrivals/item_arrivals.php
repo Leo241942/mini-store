@@ -1,17 +1,42 @@
 <div class="item_arrivals">
-    <!-- image tag and controls -->
+    <!-- Блок изображения и управления -->
     <div class="img_container">
-        <img src="../image/item1.jpg" alt="">
-        <div class="tag">sale</div>
+        <!-- Выводим изображение товара -->
+        <img src="../image/<?= htmlspecialchars($cover) ?>" alt="<?= htmlspecialchars($name) ?>">
+
+        <!-- Выводим тег, если он есть -->
+        <?php if (!empty($tags)): ?>
+            <div class="tag"><?= htmlspecialchars($tags) ?></div>
+        <?php endif; ?>
+
+        <!-- Управление товарами (добавление в корзину, расширение, добавление в избранное) -->
         <div class="controls">
-            <a href="#" class="add_cart">add to cart <i class="ri-arrow-right-line"></i> </a>
-            <a href="#"><i class="ri-expand-diagonal-line"></i></a>
-            <a href="#"><i class="ri-heart-add-line"></i></a>
+            <form  class = "control">
+                <button>
+                  <i class="ri-expand-diagonal-line"></i>
+                </button>
+            </form>
+            <form  class = "control">
+                <button>
+                    <i class="ri-heart-add-line"></i>
+                </button>
+            </form>
         </div>
     </div>
-    <!-- info arrivals -->
+
+    <!-- Блок информации о товаре -->
     <div class="info">
-        <p class="name">Seven Zero Five</p>
-        <p class="price">$40.00</p>
+        <!-- Название товара -->
+        <a class="name" href="template_product.php?product_id=<?= htmlspecialchars($productId) ?>">
+            <?= htmlspecialchars($name) ?>
+        </a>
+
+        <!-- Цена товара, с учетом скидки, если есть -->
+        <p class="price">
+            <?= !empty($discountPrice) 
+                ? "<del>\${$price}</del> <span>\${$discountPrice}</span>" 
+                : "\${$price}" 
+            ?>
+        </p>
     </div>
 </div>

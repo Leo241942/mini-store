@@ -50,12 +50,12 @@ header {
 }
 
 /* action cart */
-.cart_open
-{
-    width: 400px;
+.cart_open {
+    max-width: 1000px;
     background-color: white;
     position: fixed;
     right: 0;
+    top: 0;
     z-index: 99;
     height: 100vh;
     box-sizing: border-box;
@@ -66,26 +66,28 @@ header {
     transform: translateX(100%);
     transition: transform 0.3s ease;
 
-    &.active
-    {
+    &.active {
         transform: translateX(0);
     }
 
-    .header_cart
-    {
+    .header_cart {
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
 
-        .title
-        {
+        .title {
             font-size: 25px;
-            color: #000000;
-            font-weight: bold;            
+            font-weight: bold;
+            color: #333;
         }
 
         .count {
-            font-weight: bold;  
+            font-size: 16px;
+            font-weight: bold;
             width: 35px;
             height: 35px;
             border-radius: 50%;
@@ -95,106 +97,98 @@ header {
             align-items: center;
             justify-content: center;
         }
-        
-        
     }
 
-    .product_list
-    {
-        width: 100%;
+    .product_list {
         display: flex;
         flex-direction: column;
-    
+        gap: 15px;
+        max-height: 60vh;
+        overflow-y: auto;
 
-        li
-        {
+        li {
             display: flex;
-            width: 100%;
             justify-content: space-between;
-            border: 0.1px solid #7474743a;
-            padding: 5px;
-          
-            &.item_product
-            {
-                .info
-                {
+            align-items: center;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 10px 0;
+
+            &.item_product {
+                .info {
                     display: flex;
                     flex-direction: column;
                     gap: 5px;
-    
-                    .name
-                    {
+
+                    .name {
                         font-size: 16px;
                         font-weight: bold;
-                        color: #000;
+                        color: #333;
                     }
-    
-                    .description
-                    {
+
+                    .description {
                         font-size: 14px;
-                        color: #212529;
+                        color: #777;
                     }
                 }
-    
-                .price
-                {
-                    color: #212529;
+
+                .price {
                     font-size: 16px;
+                    color: #333;
                 }
             }
-            
-          &.total_price
-          {
-            border-radius: 0 0 5px 5px; 
-            
-            p
-            {
-                color: #212529aa;
+
+            &.total_price {
+                display: flex;
+                justify-content: space-between;
                 font-weight: bold;
-                font-size: 19px;
+                padding-top: 15px;
+                border-top: 2px solid #333;
+                margin-top: 20px;
+
+                .price {
+                    color: #000;
+                    font-size: 18px;
+                }
             }
-          }
         }
     }
 
-    .btn_continue
-    {
-        background-color: transparent;
-        margin: auto;
-        padding: 20px 30px;
-        width: 100%;
+    .btn_continue {
+        background-color: #000;
+        color: white;
+        padding: 15px 20px;
         font-size: 16px;
-        border-radius: 6px;
+        width: 100%;
         border: none;
-        background-color: #000000;
-        color: #ffffff;
+        border-radius: 6px;
+        cursor: pointer;
         transition: 0.3s;
-        border: 1px solid black;
-        
+        margin-top: 20px;
+
         &:hover {
-            background-color: white;
-            color: #000000;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
         }
     }
 }
 
-.blackout
-{
-    background-color: #000;
+.blackout {
     position: fixed;
-    z-index: 98;
     top: 0;
     left: 0;
-    width: 100%; 
-    height: 100%; 
-    display: none;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s ease;
-    
-    &.active
-    {
-        display: block;
-        opacity: 0.5;
+    z-index: 90;
+
+    &.active {
+        visibility: visible;
+        opacity: 1;
     }
 }
+
  

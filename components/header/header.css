@@ -43,10 +43,11 @@ header {
 
 /* action cart */
 .cart_open {
-  width: 400px;
+  max-width: 1000px;
   background-color: white;
   position: fixed;
   right: 0;
+  top: 0;
   z-index: 99;
   height: 100vh;
   box-sizing: border-box;
@@ -64,13 +65,18 @@ header {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
 }
 .cart_open .header_cart .title {
   font-size: 25px;
-  color: #000000;
   font-weight: bold;
+  color: #333;
 }
 .cart_open .header_cart .count {
+  font-size: 16px;
   font-weight: bold;
   width: 35px;
   height: 35px;
@@ -82,16 +88,18 @@ header {
   justify-content: center;
 }
 .cart_open .product_list {
-  width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 .cart_open .product_list li {
   display: flex;
-  width: 100%;
   justify-content: space-between;
-  border: 0.1px solid rgba(116, 116, 116, 0.2274509804);
-  padding: 5px;
+  align-items: center;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 0;
 }
 .cart_open .product_list li.item_product .info {
   display: flex;
@@ -101,55 +109,59 @@ header {
 .cart_open .product_list li.item_product .info .name {
   font-size: 16px;
   font-weight: bold;
-  color: #000;
+  color: #333;
 }
 .cart_open .product_list li.item_product .info .description {
   font-size: 14px;
-  color: #212529;
+  color: #777;
 }
 .cart_open .product_list li.item_product .price {
-  color: #212529;
   font-size: 16px;
+  color: #333;
 }
 .cart_open .product_list li.total_price {
-  border-radius: 0 0 5px 5px;
-}
-.cart_open .product_list li.total_price p {
-  color: rgba(33, 37, 41, 0.6666666667);
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
-  font-size: 19px;
+  padding-top: 15px;
+  border-top: 2px solid #333;
+  margin-top: 20px;
+}
+.cart_open .product_list li.total_price .price {
+  color: #000;
+  font-size: 18px;
 }
 .cart_open .btn_continue {
-  background-color: transparent;
-  margin: auto;
-  padding: 20px 30px;
-  width: 100%;
+  background-color: #000;
+  color: white;
+  padding: 15px 20px;
   font-size: 16px;
-  border-radius: 6px;
+  width: 100%;
   border: none;
-  background-color: #000000;
-  color: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
   transition: 0.3s;
-  border: 1px solid black;
+  margin-top: 20px;
 }
 .cart_open .btn_continue:hover {
-  background-color: white;
-  color: #000000;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
 }
 
 .blackout {
-  background-color: #000;
   position: fixed;
-  z-index: 98;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 90;
 }
 .blackout.active {
-  display: block;
-  opacity: 0.5;
+  visibility: visible;
+  opacity: 1;
 }/*# sourceMappingURL=header.css.map */

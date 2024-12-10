@@ -98,14 +98,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // кнопки + и - в контролах товара 
-document.querySelector('.increase').addEventListener('click', function() {
-    const input = document.querySelector('input[type="number"]');
-    input.value = parseInt(input.value) + 1; // Увеличиваем на 1
-});
-
-document.querySelector('.decrease').addEventListener('click', function() {
-    const input = document.querySelector('input[type="number"]');
-    input.value = Math.max(0, parseInt(input.value) - 1); // Уменьшаем на 1, не даем значения ниже 0
+document.addEventListener("DOMContentLoaded", function() {
+    const increaseButton = document.querySelector('.increase');
+    const decreaseButton = document.querySelector('.decrease');
+    const inputField = document.getElementById('quantity_product');
+    
+    // Получаем минимальное и максимальное значение
+    const minValue = parseInt(inputField.min);
+    const maxValue = parseInt(inputField.max);
+    
+    // Увеличение значения
+    increaseButton.addEventListener('click', function() {
+        let currentValue = parseInt(inputField.value);
+        if (currentValue < maxValue) {
+            inputField.value = currentValue + 1;
+        }
+    });
+    
+    // Уменьшение значения
+    decreaseButton.addEventListener('click', function() {
+        let currentValue = parseInt(inputField.value);
+        if (currentValue > minValue) {
+            inputField.value = currentValue - 1;
+        }
+    });
 });
 
 
@@ -157,4 +173,32 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+  
+
+
+
+  function restrictInputValue() {
+    const inputs = document.querySelectorAll('input[type="number"]'); // находим все инпуты с типом number
+  
+    inputs.forEach(input => {
+      input.addEventListener('input', function () {
+        const min = parseFloat(input.min); // получаем минимальное значение
+        const max = parseFloat(input.max); // получаем максимальное значение
+  
+        let value = parseFloat(input.value); // текущий ввод пользователя
+  
+        // Проверяем, если значение меньше минимального, то устанавливаем минимальное значение
+        if (value < min) {
+          input.value = min;
+        }
+        // Проверяем, если значение больше максимального, то устанавливаем максимальное значение
+        else if (value > max) {
+          input.value = max;
+        }
+      });
+    });
+  }
+  
+  // Вызываем функцию после загрузки страницы, чтобы она работала с уже существующими инпутами
+  document.addEventListener('DOMContentLoaded', restrictInputValue);
   
