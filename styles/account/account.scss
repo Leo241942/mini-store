@@ -1,0 +1,138 @@
+.account {
+    display: flex;
+    justify-content: center;
+    padding: var(--side-padding);
+    box-sizing: border-box;
+  
+    .container_width {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+  
+      .header_account {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        border-bottom: 1px solid #747474;
+        padding: 5px;
+  
+        button {
+          background-color: transparent;
+          border: none;
+          color: var(--primary-color);
+          font-weight: bold;
+          font-size: 20px;
+          cursor: pointer;
+          transition: border-bottom 0.3s ease;
+  
+          &.active {
+            border-bottom: 2px solid var(--primary-color);
+          }
+        }
+      }
+  
+      form {
+        display: none; /* Все формы скрыты по умолчанию */
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        transition: opacity 0.3s ease-in-out;
+  
+        &.show {
+          display: flex; /* Показываем только активную форму */
+        }
+  
+        input,
+        button {
+          width: 100%;
+        }
+  
+        input {
+          padding: 15px;
+          border: 1px solid #747474;
+          border-radius: 5px;
+        }
+  
+        button {
+          background-color: #000;
+          color: white;
+          padding: 15px 20px;
+          text-transform: uppercase;
+          font-size: 16px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: 0.3s;
+          border: 1px solid black;
+  
+          &:hover {
+            background-color: #fff;
+            color: #000;
+          }
+        }
+      }
+  
+      /* Стили для области перетаскивания */
+      .drop-area {
+        width: 100%;
+        height: 150px;
+        border: 2px dashed #aaa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f7f7f7;
+        font-size: 18px;
+        color: #888;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+  
+        &.dragover {
+          background-color: #e0e0e0;
+          border: 2px solid #000; /* Установим рамку при перетаскивании */
+        }
+      }
+  
+      /* Стиль для текста и галочки */
+      .file-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+        position: relative;
+      }
+  
+      .file-text {
+        font-size: 18px;
+        color: #888;
+        margin-right: 10px; /* Добавляем отступ между текстом и галочкой */
+      }
+  
+      /* Анимация галочки */
+      .file-icon {
+        width: 30px;
+        padding: 5px;
+        height:30px;
+        border-radius: 50%;
+        background-color: #28a745; /* Зеленый цвет для галочки */
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2;
+        opacity: 0; /* Скрыта по умолчанию */
+        transition: opacity 0.5s ease-in-out, stroke-dashoffset 0.6s ease-in-out;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        display: inline-block;
+        margin-left: 5px; /* Добавляем отступ от текста */
+      }
+  
+      .file-icon.show {
+        opacity: 1;
+        stroke-dashoffset: 0; /* Рисуем галочку */
+      }
+    }
+  }
+  
