@@ -40,12 +40,19 @@ input[type="number"] {
 }
 
 
-:root
-{
+:root {
     --max-width: 1300px;
-
-    --font-primary: 'Josefin Sans', sans-serif;;
-    --header-heigth:100px
+    --font-primary: 'Josefin Sans', sans-serif;
+    --font-secondary: 'Jost', sans-serif;
+    --header-height: 100px;
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #747474;
+    --hover-bg-color: #ffffff;
+    --hover-text-color: #000000;
+    --transition-duration: 0.3s;
+    --gap: 15px;
+    --side-padding: 25px;
 }
 
 body

@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".slide");
     const sliderContainer = document.querySelector(".sliders");
+    const currentSlideContainer = document.querySelector(".current_slide");
     let currentIndex = 0;
     let autoSlideInterval;
     let autoSliding = true; // Флаг для автопереключения слайдов
@@ -16,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
         currentSlideImg.alt = "Current Image";
 
         // Очищаем текущий контейнер и добавляем новое изображение без анимации
-        document.querySelector(".current_slide").innerHTML = ''; // Очищаем текущий контейнер
-        document.querySelector(".current_slide").appendChild(currentSlideImg);
+        currentSlideContainer.innerHTML = ''; // Очищаем текущий контейнер
+        currentSlideContainer.appendChild(currentSlideImg);
     }
 
     // Функция для перемещения слайдов при клике
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Функция для автоматической прокрутки слайдов
+    // Функция для автоматической прокрутки слайдов с цикличностью
     function startAutoSlide() {
         if (autoSliding) {
             autoSlideInterval = setInterval(() => {
@@ -73,13 +74,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     sliderContainer.addEventListener("touchmove", function (event) {
         const touchMoveY = event.touches[0].clientY;
-        if (startTouchY - touchMoveY > 50) {
-            // Вниз
-            sliderContainer.scrollBy({ top: 150, behavior: 'smooth' });
-            startTouchY = touchMoveY; // Обновляем начальную точку
-        } else if (touchMoveY - startTouchY > 50) {
-            // Вверх
-            sliderContainer.scrollBy({ top: -150, behavior: 'smooth' });
+        const moveDistance = startTouchY - touchMoveY;
+
+        if (Math.abs(moveDistance) > 50) {
+            if (moveDistance > 0) {
+                // Прокрутка вниз
+                // Добавляем первый слайд в конец
+                sliderContainer.appendChild(slides[0]);
+
+                // Сдвигаем контейнер
+                currentIndex = (currentIndex + 1) % slides.length; // Зацикливаем
+                changeSlide(currentIndex);
+                moveSlides(currentIndex);
+
+                // Отключаем анимацию на момент перемещения
+                slides[0].style.transition = "none"; 
+            } else {
+                // Прокрутка вверх
+                // Перемещаем последний слайд в начало
+                sliderContainer.insertBefore(slides[slides.length - 1], slides[0]);
+
+                // Сдвигаем контейнер
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Зацикливаем
+                changeSlide(currentIndex);
+                moveSlides(currentIndex);
+
+                // Отключаем анимацию на момент перемещения
+                slides[slides.length - 1].style.transition = "none"; 
+            }
+
             startTouchY = touchMoveY; // Обновляем начальную точку
         }
     });
@@ -88,13 +111,32 @@ document.addEventListener("DOMContentLoaded", function () {
     sliderContainer.addEventListener("wheel", function (event) {
         if (event.deltaY > 0) {
             // Прокрутка вниз
-            sliderContainer.scrollBy({ top: 150, behavior: 'smooth' });
+            // Добавляем первый слайд в конец
+            sliderContainer.appendChild(slides[0]);
+
+            // Сдвигаем контейнер
+            currentIndex = (currentIndex + 1) % slides.length; // Зацикливаем
+            changeSlide(currentIndex);
+            moveSlides(currentIndex);
+
+            // Отключаем анимацию на момент перемещения
+            slides[0].style.transition = "none"; 
         } else {
             // Прокрутка вверх
-            sliderContainer.scrollBy({ top: -150, behavior: 'smooth' });
+            // Перемещаем последний слайд в начало
+            sliderContainer.insertBefore(slides[slides.length - 1], slides[0]);
+
+            // Сдвигаем контейнер
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Зацикливаем
+            changeSlide(currentIndex);
+            moveSlides(currentIndex);
+
+            // Отключаем анимацию на момент перемещения
+            slides[slides.length - 1].style.transition = "none"; 
         }
     });
 });
+
 
 
 // кнопки + и - в контролах товара 
@@ -157,24 +199,6 @@ setActiveButtons('.control-element.color .controls-container', '.color-btn');
 setActiveButtons('.control-element.size .controls-container', '.size-btn');
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.tabs_controls button');
-    const tabs = document.querySelectorAll('.tab_content');
-  
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Удаляем активный класс со всех кнопок и вкладок
-        buttons.forEach(btn => btn.classList.remove('active'));
-        tabs.forEach(tab => tab.classList.remove('active'));
-  
-        // Добавляем активный класс к текущей кнопке и соответствующей вкладке
-        button.classList.add('active');
-        document.querySelector(`.tab_${button.dataset.tab}`).classList.add('active');
-      });
-    });
-  });
-  
-
 
 
   function restrictInputValue() {
@@ -202,3 +226,82 @@ document.addEventListener('DOMContentLoaded', () => {
   // Вызываем функцию после загрузки страницы, чтобы она работала с уже существующими инпутами
   document.addEventListener('DOMContentLoaded', restrictInputValue);
   
+  document.addEventListener("DOMContentLoaded", function() {
+    let selectedColorId = '';
+    let selectedSizeId = '';
+
+    // Выбираем первый доступный цвет и устанавливаем его как активный
+    const colorButtons = document.querySelectorAll('.color-btn');
+    if (colorButtons.length > 0) {
+        selectedColorId = colorButtons[0].getAttribute('data-color-id');
+        colorButtons[0].classList.add('active'); // Делаем кнопку активной
+        document.getElementById('selected_color').value = selectedColorId;
+    }
+
+    // Выбираем первый доступный размер и устанавливаем его как активный
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    if (sizeButtons.length > 0) {
+        selectedSizeId = sizeButtons[0].getAttribute('data-size-id');
+        sizeButtons[0].classList.add('active'); // Делаем кнопку активной
+        document.getElementById('selected_size').value = selectedSizeId;
+    }
+
+    // Устанавливаем количество по умолчанию равным 1
+    const quantityInput = document.getElementById('quantity_product');
+    quantityInput.value = 1;
+
+
+    // Обработчик выбора цвета
+    colorButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            selectedColorId = this.getAttribute('data-color-id'); // Получаем ID цвета
+            document.getElementById('selected_color').value = selectedColorId; // Устанавливаем ID цвета в скрытое поле
+            colorButtons.forEach(btn => btn.classList.remove('active')); // Убираем класс active у всех
+            this.classList.add('active'); // Добавляем класс active текущей кнопке
+        });
+    });
+
+    // Обработчик выбора размера
+    sizeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            selectedSizeId = this.getAttribute('data-size-id'); // Получаем ID размера
+            document.getElementById('selected_size').value = selectedSizeId; // Устанавливаем ID размера в скрытое поле
+            sizeButtons.forEach(btn => btn.classList.remove('active')); // Убираем класс active у всех
+            this.classList.add('active'); // Добавляем класс active текущей кнопке
+        });
+    });
+
+    // Обработчик кнопки добавления в корзину
+    const addToCartButton = document.getElementById('add_to_cart');
+    addToCartButton.addEventListener('click', function() {
+        // Получаем количество товара
+        const quantity = quantityInput.value;
+        document.getElementById('selected_quantity').value = quantity;
+
+        // Подготовка данных для отправки на сервер
+        const formData = new FormData();
+        formData.append('product_id', document.querySelector('[name="product_id"]').value);
+        formData.append('user_id', document.querySelector('[name="user_id"]').value);
+        formData.append('color', selectedColorId); // Теперь передаем ID цвета
+        formData.append('size', selectedSizeId); // Теперь передаем ID размера
+        formData.append('quantity', quantity);
+
+        // Отправка данных с использованием fetch
+        fetch('../php/template_product/process_cart.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json()) // Ожидаем, что сервер вернет JSON
+        .then(data => {
+            if (data.success) {
+                alert('Товар добавлен в корзину!');
+            } else {
+                alert('Не удалось добавить товар в корзину.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при добавлении товара в корзину.');
+        });
+    });
+});

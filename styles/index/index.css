@@ -66,6 +66,7 @@ main {
 .our_advantages .container_adantages {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 50px;
 }
 .our_advantages .container_adantages .item_adantages {

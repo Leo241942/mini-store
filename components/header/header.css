@@ -1,20 +1,17 @@
 header {
   width: 100%;
-  box-sizing: border-box;
-  padding: 10px 0px;
-  box-sizing: border-box;
+  padding: 10px 0;
+  background-color: #f8f8f8;
   z-index: 10;
   display: flex;
   justify-content: center;
-  transition: background-color 0.3s ease;
-  background-color: #f8f8f8;
+  box-sizing: border-box;
 }
 
 .header_content {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 25px 0px;
+  padding: 25px 0;
 }
 .header_content a {
   text-transform: uppercase;
@@ -41,9 +38,9 @@ header {
   font-size: 24px;
 }
 
-/* action cart */
 .cart_open {
-  max-width: 1000px;
+  min-width: 300px;
+  max-width: 600px;
   background-color: white;
   position: fixed;
   right: 0;
@@ -62,7 +59,6 @@ header {
   transform: translateX(0);
 }
 .cart_open .header_cart {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -94,32 +90,25 @@ header {
   max-height: 60vh;
   overflow-y: auto;
 }
-.cart_open .product_list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.cart_open .product_list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.cart_open .product_list table th, .cart_open .product_list table td {
+  padding: 12px 15px;
+  text-align: left;
   border-bottom: 1px solid #f1f1f1;
-  padding: 10px 0;
 }
-.cart_open .product_list li.item_product .info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.cart_open .product_list li.item_product .info .name {
-  font-size: 16px;
-  font-weight: bold;
+.cart_open .product_list table th {
+  background-color: #f8f8f8;
   color: #333;
+  font-size: 16px;
 }
-.cart_open .product_list li.item_product .info .description {
-  font-size: 14px;
+.cart_open .product_list table td {
   color: #777;
+  font-size: 14px;
 }
-.cart_open .product_list li.item_product .price {
-  font-size: 16px;
-  color: #333;
-}
-.cart_open .product_list li.total_price {
+.cart_open .product_list .total_price {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
@@ -127,7 +116,7 @@ header {
   border-top: 2px solid #333;
   margin-top: 20px;
 }
-.cart_open .product_list li.total_price .price {
+.cart_open .product_list .total_price .price {
   color: #000;
   font-size: 18px;
 }
@@ -141,7 +130,6 @@ header {
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
-  margin-top: 20px;
 }
 .cart_open .btn_continue:hover {
   background-color: #fff;

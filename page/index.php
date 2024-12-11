@@ -1,18 +1,13 @@
 <?php
-
 require_once '../php/classes/ProductRepository.php';
 require_once '../php/classes/CartRepository.php';
 require_once '../php/connect.php';
 
-
 // Создаем экземпляр класса ProductRepository
 $ProductRepository = new ProductRepository($pdo);
 
-// Получаем все карточки товаров
-
-
-
-
+// Получаем 8 карточек товаров для отображения на главной странице
+$products = $ProductRepository->getProductCards(8);
 ?>
 
 <!DOCTYPE html>
@@ -24,24 +19,21 @@ $ProductRepository = new ProductRepository($pdo);
     <title>Document</title>
     <link rel="stylesheet" href="../styles/index/index.css">
     <link rel="stylesheet" href="../styles/root/root.css">
-
     <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
     <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
-
 </head>
 
 <body>
-<?php  require_once "../components/header/header.php";  ?>
-
+    <?php require_once "../components/header/header.php"; ?>
 
     <main>
         <section class="start_shopping">
             <div class="container_width">
                 <div class="promo_banner">
                     <p class="title">Street Wears</p>
-                    <p class="description">High quality cool tshirts for street fashion</p>
+                    <p class="description">High quality cool t-shirts for street fashion</p>
                     <button class="btn_StartShopoing">start shopping <i class="ri-arrow-right-line"></i></button>
                 </div>
             </div>
@@ -50,26 +42,21 @@ $ProductRepository = new ProductRepository($pdo);
         <section class="our_advantages">
             <div class="container_width">
                 <div class="container_adantages">
-                    <div class="item_adantages">
-                        <i class="ri-shopping-cart-2-line"></i>
-                        <p class="title">Free Delivery</p>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-                    </div>
-                    <div class="item_adantages">
-                        <i class="ri-shield-check-line"></i>
-                        <p class="title">100% secure payment</p>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-                    </div>
-                    <div class="item_adantages">
-                        <i class="ri-medal-line"></i>
-                        <p class="title">Quality guarantee</p>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-                    </div>
-                    <div class="item_adantages">
-                        <i class="ri-money-dollar-circle-line"></i>
-                        <p class="title">Daily Offer</p>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-                    </div>
+                    <?php 
+                    $advantages = [
+                        ['icon' => 'ri-shopping-cart-2-line', 'title' => 'Free Delivery', 'desc' => 'Lorem ipsum dolor sit amet.'],
+                        ['icon' => 'ri-shield-check-line', 'title' => '100% Secure Payment', 'desc' => 'Lorem ipsum dolor sit amet.'],
+                        ['icon' => 'ri-medal-line', 'title' => 'Quality Guarantee', 'desc' => 'Lorem ipsum dolor sit amet.'],
+                        ['icon' => 'ri-money-dollar-circle-line', 'title' => 'Daily Offer', 'desc' => 'Lorem ipsum dolor sit amet.']
+                    ];
+                    foreach ($advantages as $adv) {
+                        echo "<div class='item_adantages'>
+                                <i class='{$adv['icon']}'></i>
+                                <p class='title'>{$adv['title']}</p>
+                                <p class='description'>{$adv['desc']}</p>
+                              </div>";
+                    }
+                    ?>
                 </div>
             </div>
         </section>
@@ -79,46 +66,42 @@ $ProductRepository = new ProductRepository($pdo);
                 <p class="title">New Arrivals</p>
                 <div class="listing_container">
                     <div class="listing">
-
-                        <!-- item template -->
-                        <?php  
-
-                        $products = $ProductRepository->getProductCards(8);
-
-                            foreach ($products as $product) {
-                                $cover = $product['cover']; 
-                                $tags = $product['tags']; 
-                                $name = $product['product_name'];
-                                $price = $product['price'];
-                                $discountPrice = $product['discount_price']; 
-                                $productId = $product['id']; 
-                                require "../components/item_arrivals/item_arrivals.php" ;  
-                            }
+                        <?php
+                        // Отображаем товары
+                        foreach ($products as $product) {
+                            $cover = $product['cover']; 
+                            $tags = $product['tags']; 
+                            $name = $product['product_name'];
+                            $price = $product['price'];
+                            $discountPrice = $product['discount_price']; 
+                            $productId = $product['id']; 
+                            require "../components/item_arrivals/item_arrivals.php";
+                        }
                         ?>
                     </div>
-                    <button class="btn_allProduct">View All Products</button>
+                    <a class="btn_allProduct" href="catalog.php">View All Products</a>
                 </div>
             </div>
         </section>
 
         <section class="category">
-            <a href="#" class="category_item">
-               <img src="../image/category1.jpg" alt="">
-               <p class="title">Printed T-Shirts</p>
-            </a>
-            <a href="#" class="category_item">
-                <img src="../image/category2.jpg" alt="">
-                <p class="title">Mono T-Shirts</p>
-             </a>
-             <a href="#" class="category_item">
-                <img src="../image/category3.jpg" alt="">
-                <p class="title">Graphic Hoodies</p>
-             </a>
+            <?php 
+            $categories = [
+                ['img' => 'category1.jpg', 'title' => 'Printed T-Shirts'],
+                ['img' => 'category2.jpg', 'title' => 'Mono T-Shirts'],
+                ['img' => 'category3.jpg', 'title' => 'Graphic Hoodies']
+            ];
+            foreach ($categories as $category) {
+                echo "<a href='#' class='category_item'>
+                        <img src='../image/{$category['img']}' alt=''>
+                        <p class='title'>{$category['title']}</p>
+                      </a>";
+            }
+            ?>
         </section>
-
     </main>
 
-    <?php  require_once "../components/footer/footer.html";  ?>
+    <?php require_once "../components/footer/footer.php"; ?>
 
     <script src="../js/index/index.js"></script>
 </body>

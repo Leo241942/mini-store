@@ -9,7 +9,7 @@ class ShopRepository
     }
 
     // Функция для получения товаров с пагинацией
-    public function getPaginatedProducts(int $page = 1, int $perPage = 9): array
+    public function getPaginatedProducts(int $page = 1, int $perPage = 6): array
     {
         // Вычисляем смещение для пагинации
         $offset = ($page - 1) * $perPage;

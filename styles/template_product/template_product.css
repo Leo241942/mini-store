@@ -1,50 +1,4 @@
 @charset "UTF-8";
-.tabs_container {
-  display: flex;
-  gap: 30px;
-}
-.tabs_container .tabs_controls {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.tabs_container .tabs_controls button {
-  font-size: 19px;
-  font-weight: bold;
-  color: #000;
-  background-color: transparent;
-  padding: 5px 0;
-  border: none;
-  min-width: 300px;
-  cursor: pointer;
-}
-.tabs_container .tabs_controls button.active {
-  background-color: #000;
-  color: white;
-}
-.tabs_container .tabs {
-  flex-grow: 1;
-}
-.tabs_container .tab_content {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.tabs_container .tab_content.active {
-  display: block;
-  opacity: 1;
-}
-.tabs_container .product_description {
-  color: #747474;
-  font-size: 16px;
-  line-height: 30px;
-  text-align: start;
-}
-.tabs_container .title {
-  font-weight: bold;
-  font-size: 25px;
-}
-
 /* Стили для слайдера */
 .slider {
   display: flex;
@@ -89,6 +43,20 @@
      object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+.full_description {
+  display: grid;
+  gap: 20px;
+}
+.full_description .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.full_description .text_description {
+  color: #747474;
+  font-size: 16px;
+  line-height: 30px;
 }
 
 .product {

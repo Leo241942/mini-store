@@ -9,14 +9,17 @@ $shopRepository = new ShopRepository($pdo);
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // Количество товаров на странице
-$perPage = 6;
+$perPage = 8;
+
+// Получаем товары для текущей страницы
 $products = $shopRepository->getPaginatedProducts($page, $perPage);
 
 // Получаем общее количество товаров
 $totalProducts = $shopRepository->getTotalProductCount();
 
 // Вычисляем общее количество страниц
-$totalPages = ceil($totalProducts / $perPage);
+// $totalPages = ceil($totalProducts / $perPage);
+$totalPages = ceil(200);
 ?>
 
 <!DOCTYPE html>
@@ -28,64 +31,54 @@ $totalPages = ceil($totalProducts / $perPage);
     <title>Catalog</title>
     <link rel="stylesheet" href="../styles/catalog/catalog.css">
     <link rel="stylesheet" href="../styles/root/root.css">
-
-    <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
     <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
 </head>
 
 <body>
-<?php require_once "../components/header/header.php"; ?>
+    <?php require_once "../components/header/header.php"; ?>
 
-<main>
-    <section class="catalog">
-        <div class="container_width">
-            <!-- панель фильтрации-->
-            <div class="filter_panel">
-                <input type="search" class="search" placeholder="Search for products">
-                <div class="filters_container">
-             
-                </div>
-            </div> <!-- панель фильтрации -->
+    <main>
+        <section class="catalog">
+            <div class="container_width">
+                <div class="listing_container">
+                    <div class="header_listing">
+                        <p class="showing_result">Showing <?= (($page - 1) * $perPage) + 1 ?>–<?= min($page * $perPage, $totalProducts) ?> of <?= $totalProducts ?> results</p>
 
-            <div class="listing_container">
-                <div class="header_listing">
-                    <p class="showing_result">Showing <?= (($page - 1) * $perPage) + 1 ?>–<?= min($page * $perPage, $totalProducts) ?> of <?= $totalProducts ?> results</p>
-
-                    <div class="sort">
-                        <p>Sort by</p>
-                        <select class="product_sort">
-                            <option value="default">Default</option>
-                            <option value="Price(Low-High)">Price(Low-High)</option>
-                            <option value="Price(High-Low)">Price(High-Low)</option>
-                        </select>
+                        <div class="sort">
+                            <p>Sort by</p>
+                            <select class="product_sort">
+                                <option value="default">Default</option>
+                                <option value="Price(Low-High)">Price(Low-High)</option>
+                                <option value="Price(High-Low)">Price(High-Low)</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="listing">
-                    <?php
-                    foreach ($products as $product) {
-                        $cover = $product['cover'];
-                        $tags = $product['tags'];
-                        $name = $product['product_name'];
-                        $price = $product['price'];
-                        $discountPrice = $product['discount_price'];
-                        $productId = $product['id'];
-                        require "../components/item_arrivals/item_arrivals.php";
-                    }
-                    ?>
-                </div>
+                    <div class="listing">
+                        <?php foreach ($products as $product): ?>
+                            <?php
+                                      $cover = $product['cover']; 
+                                      $tags = $product['tags']; 
+                                      $name = $product['product_name'];
+                                      $price = $product['price'];
+                                      $discountPrice = $product['discount_price']; 
+                                      $productId = $product['id']; 
+                                require "../components/item_arrivals/item_arrivals.php";
+                            ?>
+                        <?php endforeach; ?>
+                    </div>
 
-                <!-- Пагинация -->
-                <?php echo $shopRepository->generatePagination($page, $totalPages); ?>
+                    <!-- Пагинация -->
+                    <?php echo $shopRepository->generatePagination($page, $totalPages); ?>
+                </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 
-<?php require_once "../components/footer/footer.html"; ?>
+    <?php require_once "../components/footer/footer.php"; ?>
 
-<script src="../js/index/index.js"></script>
+    <script src="../js/index/index.js"></script>
 </body>
 </html>

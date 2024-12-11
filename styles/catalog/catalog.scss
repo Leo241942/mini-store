@@ -1,123 +1,160 @@
-body
-{
+
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
     gap: 60px;
 }
-.catalog
-{
-    width: 100%;
+
+.catalog {
     display: flex;
-    align-items: center;
     justify-content: center;
+    padding: var(--side-padding);
+    
+ 
 
-    .container_width
-    {
-        display: flex;
-        flex-direction: row;
-        gap: 25px;
-    }
-
-    .filter_panel
-    {
-        flex-shrink: 0; /* Запрещаем уменьшение */
-        flex-grow: 0;
-
-        max-width: 250px;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-
-        .search
-        {
-            width: 100%;
-            padding: 15px 15px;
-            box-sizing: border-box;
-            border: 1px solid #cfcece;
-            border-radius: 10px;
-        }
-
-        .filters_container
-        {
+        .listing_container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            width: 100%;
 
-            .filter_component
-            {
-                color: #000;
-                font-weight: bold;
+            .header_listing {
                 display: flex;
-                flex-direction: column;
-                gap: 10px;
-                .title_filter
-                {
-                    font-size: 24px;
-        
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+
+                .showing_result {
+                    color: var(--primary-color);
+                    font-size: 16px;
                 }
 
-                .filter
-                {
+                .sort {
                     display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                    font-size: 14px;
-                    text-transform: uppercase;
+                    gap: var(--gap);
 
+                    p {
+                        font-size: 14px;
+                        color: var(--accent-color);
+                    }
+
+                    .product_sort {
+                        padding: 10px;
+                        border: 1px solid var(--accent-color);
+                        border-radius: 5px;
+                        background-color: var(--secondary-color);
+                        cursor: pointer;
+                        transition: all var(--transition-duration);
+
+                        &:hover {
+                            background-color: var(--hover-bg-color);
+                            color: var(--hover-text-color);
+                        }
+                    }
                 }
             }
 
+            .listing {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--gap);
+
+                .item_arrival {
+                    width: calc(33.33% - var(--gap));
+                    background-color: var(--secondary-color);
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    transition: transform var(--transition-duration);
+
+                    &:hover {
+                        transform: translateY(-5px);
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 10px;
+                        transition: opacity var(--transition-duration);
+
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+
+                    .item_name {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-top: 10px;
+                        color: var(--primary-color);
+                    }
+
+                    .item_price {
+                        font-size: 16px;
+                        color: var(--primary-color);
+                        font-weight: bold;
+                        margin-top: 5px;
+                    }
+                }
+            }
+
+            .pagination {
+                display: flex;
+                justify-content: center;
+                gap: var(--gap);
+                flex-wrap: wrap;
+                margin-top: 20px;
+                max-width: 100%;
+
+                .pagination_element {
+                    padding: 10px;
+                    border: 1px solid var(--accent-color);
+                    border-radius: 5px;
+                    text-align: center;
+                    color: var(--accent-color);
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: background-color var(--transition-duration), color var(--transition-duration);
+
+                    &:hover {
+                        background-color: var(--hover-bg-color);
+                        color: var(--hover-text-color);
+                    }
+
+                    &.active {
+                        background-color: var(--hover-bg-color);
+                        color: var(--hover-text-color);
+                    }
+                }
+            }
         }
     }
 
-    .listing_container
-    {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
 
-        .header_listing
-        {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            
-            .sort{
-                display: flex;
-                gap: 15px;
+@media (max-width: 768px) {
+    .catalog {
+        .container_width {
+            flex-direction: column;
+            padding: 15px;
+        }
 
-                .product_sort
-                {
-                    border: none;
-                }
+        .listing_container {
+            .listing {
+                flex-direction: column;
             }
-            
-        }
 
-        .listing
-        {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .pagination
-        {
-            margin: auto;
-            max-width: 600px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        
-            .pagination_element
-            { 
-                font-size: 20px;
-                font-weight: bold;
-                color: #747474;
+            .item_arrival {
+                width: 100%;
             }
-           
-        }
-         
-         
 
+            .filter_panel {
+                max-width: 100%;
+            }
+        }
     }
 }

@@ -5,19 +5,19 @@
         <img src="../image/<?= htmlspecialchars($cover) ?>" alt="<?= htmlspecialchars($name) ?>">
 
         <!-- Выводим тег, если он есть -->
-        <?php if (!empty($tags)): ?>
+        <?php if ($tags): ?>
             <div class="tag"><?= htmlspecialchars($tags) ?></div>
         <?php endif; ?>
 
-        <!-- Управление товарами (добавление в корзину, расширение, добавление в избранное) -->
         <div class="controls">
-            <form  class = "control">
-                <button>
-                  <i class="ri-expand-diagonal-line"></i>
-                </button>
-            </form>
-            <form  class = "control">
-                <button>
+            <!-- Ссылка на страницу товара -->
+            <a href="template_product.php?product_id=<?= htmlspecialchars($productId) ?>">
+                <i class="ri-expand-diagonal-line"></i>
+            </a>
+
+            <!-- Кнопка для добавления в избранное -->
+            <form class="control">
+                <button type="submit">
                     <i class="ri-heart-add-line"></i>
                 </button>
             </form>
@@ -31,12 +31,13 @@
             <?= htmlspecialchars($name) ?>
         </a>
 
-        <!-- Цена товара, с учетом скидки, если есть -->
+        <!-- Цена товара с учетом скидки, если есть -->
         <p class="price">
-            <?= !empty($discountPrice) 
-                ? "<del>\${$price}</del> <span>\${$discountPrice}</span>" 
-                : "\${$price}" 
-            ?>
+            <?php if ($discountPrice): ?>
+                <del><?= htmlspecialchars($price) ?>$</del> <span><?= htmlspecialchars($discountPrice) ?>$</span>
+            <?php else: ?>
+                <?= htmlspecialchars($price) ?>$
+            <?php endif; ?>
         </p>
     </div>
 </div>
