@@ -17,9 +17,6 @@ Frontend: javasript
 
 База данных: phpMyAdmin
 
-Аутентификация: JSON Web Tokens (JWT)
-
-Развертывание: Docker, Kubernetes
 
 
 📸 Скриншоты
