@@ -1,13 +1,18 @@
 <?php
 // process_cart.php
-session_start();
+session_status() === PHP_SESSION_NONE && session_start();
 
 
-// Заменяем $_SESSION['user_id'] на фиксированное значение (например, 2)
-$user_id = 2; // Для тестирования с ID 2
+$user_id = $_SESSION['user_id'];
 
 require_once '../connect.php';
 require_once '../classes/CartRepository.php'; // Подключаем класс CartRepository
+
+// Проверяем, является ли user_id числом
+if (!is_numeric($user_id)) {
+    echo json_encode(['success' => false, 'message' => 'Некорректный ID пользователя,войдите или зарегестрируйстесь']);
+    exit;
+}
 
 // Получаем параметры из POST запроса
 $colorId = isset($_POST['color']) ? (int)$_POST['color'] : null;
@@ -18,7 +23,6 @@ $userId = isset($_POST['user_id']) ? (int)$_POST['user_id'] : null;
 
 // Проверка на валидность переданных данных
 if ($colorId && $sizeId && $productId && $userId) {
-    // Создаем экземпляр CartRepository
     $cartRepository = new CartRepository($pdo);
     
     // Вызов метода addToCart для добавления товара в корзину
@@ -29,5 +33,3 @@ if ($colorId && $sizeId && $productId && $userId) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Ошибка при добавлении товара в корзину.']);
 }
-
-

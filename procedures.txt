@@ -1,0 +1,371 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrderDetails`(IN p_user_id INT)
+BEGIN
+    -- Шаг 1: Объявление переменных
+    DECLARE v_order_id INT;
+
+    -- Временная таблица для хранения информации о заказе
+    CREATE TEMPORARY TABLE order_details (
+        product_id INT,
+        product_name VARCHAR(255),
+        price DECIMAL(10, 2),
+        discount_price DECIMAL(10, 2),
+        color_name VARCHAR(50),
+        size_name VARCHAR(50),
+        quantity INT,
+        cover_image_url VARCHAR(255),
+        total_price DECIMAL(10, 2)
+    );
+
+    -- Шаг 2: Получаем ID активного заказа пользователя
+    SELECT order_id
+    INTO v_order_id
+    FROM orders
+    WHERE user_id = p_user_id AND status = 'pending'
+    LIMIT 1;
+
+    -- Если активный заказ не найден, выбрасываем исключение с сообщением
+    IF v_order_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No active order found for the user';
+    END IF;
+
+    -- Шаг 3: Вставляем данные о позициях в заказе, сгруппировав одинаковые товары
+    INSERT INTO order_details (product_id, product_name, price, discount_price, color_name, size_name, quantity, cover_image_url, total_price)
+    SELECT 
+        p.product_id,
+        p.name,
+        oi.price,
+        oi.discount,
+        pc.color_name,
+        ps.size_name,
+        SUM(oi.quantity) AS total_quantity, -- Суммируем количество одинаковых товаров
+        p.cover_image_url,
+        SUM(IFNULL(oi.discount, oi.price) * oi.quantity) AS total_price -- Суммируем стоимость с учетом скидки
+    FROM 
+        order_items oi
+        JOIN products p ON oi.product_id = p.product_id
+        LEFT JOIN product_colors pc ON oi.color_id = pc.color_id
+        LEFT JOIN product_sizes ps ON oi.size_id = ps.size_id
+    WHERE 
+        oi.order_id = v_order_id
+    GROUP BY 
+        p.product_id, p.name, oi.price, oi.discount, pc.color_name, ps.size_name, p.cover_image_url;
+
+    -- Шаг 4: Создаем итоговую выборку, объединяя детали заказа и общую сумму
+    SELECT 
+        od.*,
+        (SELECT 
+            SUM(total_price) 
+         FROM order_details) AS order_total_price
+    FROM 
+        order_details od;
+
+    -- Шаг 5: Удаляем временную таблицу после использования
+    DROP TEMPORARY TABLE IF EXISTS order_details;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductCards`(IN `limit_count` INT)
+BEGIN
+    -- Если limit_count равен NULL, то ограничение не применяется
+    IF limit_count IS NOT NULL THEN
+        SELECT 
+            p.product_id AS id,
+            p.name AS product_name,
+            p.price,
+            p.discount_price,
+            p.cover_image_url AS cover,
+            GROUP_CONCAT(t.name) AS tags,
+            COALESCE(SUM(oi.quantity), 0) AS total_quantity_in_order  -- Количество товара в заказе
+        FROM 
+            products p
+        LEFT JOIN 
+            product_tags pt ON p.product_id = pt.product_id
+        LEFT JOIN 
+            tags t ON pt.tag_id = t.tag_id
+        LEFT JOIN 
+            order_items oi ON p.product_id = oi.product_id  -- Соединяем с заказами
+        LEFT JOIN 
+            orders o ON oi.order_id = o.order_id  -- Соединяем с заказами (если нужно, можно добавить фильтрацию по заказу)
+        GROUP BY 
+            p.product_id
+        LIMIT limit_count;
+    ELSE
+        SELECT 
+            p.product_id AS id,
+            p.name AS product_name,
+            p.price,
+            p.discount_price,
+            p.cover_image_url AS cover,
+            GROUP_CONCAT(t.name) AS tags,
+            COALESCE(SUM(oi.quantity), 0) AS total_quantity_in_order  -- Количество товара в заказе
+        FROM 
+            products p
+        LEFT JOIN 
+            product_tags pt ON p.product_id = pt.product_id
+        LEFT JOIN 
+            tags t ON pt.tag_id = t.tag_id
+        LEFT JOIN 
+            order_items oi ON p.product_id = oi.product_id  -- Соединяем с заказами
+        LEFT JOIN 
+            orders o ON oi.order_id = o.order_id  -- Соединяем с заказами (если нужно, можно добавить фильтрацию по заказу)
+        GROUP BY 
+            p.product_id;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductColors`(IN `product_id` INT)
+BEGIN
+    SELECT 
+        pc.color_name,
+         pc.color_id
+    FROM 
+        product_colors pc
+    WHERE pc.product_id = product_id;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductDetails`(IN `product_id` INT)
+BEGIN
+    SELECT 
+        p.name AS product_name,
+        p.rating,
+        p.description AS short_description,
+        p.full_description,
+        p.article_number,
+        p.stock_quantity,
+        c.name AS category_name,
+        GROUP_CONCAT(t.name SEPARATOR ', ') AS tags
+    FROM 
+        products p
+    LEFT JOIN categories c ON p.category_id = c.category_id
+    LEFT JOIN product_tags pt ON p.product_id = pt.product_id
+    LEFT JOIN tags t ON pt.tag_id = t.tag_id
+    WHERE p.product_id = product_id
+    GROUP BY p.product_id;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductImages`(IN `product_id` INT)
+BEGIN
+   SELECT 
+    p.cover_image_url AS image_url
+FROM 
+    products p
+WHERE 
+    p.product_id = product_id
+
+UNION ALL
+
+SELECT 
+    pi.image_url AS image_url
+FROM 
+    product_images pi
+WHERE 
+    pi.product_id = product_id;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductSizes`(IN `product_id` INT)
+BEGIN
+    SELECT 
+        ps.size_name,
+        ps.size_id
+    FROM 
+        product_sizes ps
+    WHERE ps.product_id = product_id;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LoginUser`(IN nickname VARCHAR(255), IN password VARCHAR(500), OUT user_id INT)
+BEGIN
+    -- Проверка существования пользователя
+    SELECT user_id INTO user_id
+    FROM users
+    WHERE nickname = nickname AND password = password;
+    
+    IF user_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Неверные никнейм или пароль';
+    ELSE
+        -- Возвращение данных пользователя
+        SELECT user_id, nickname, email, avatar_url, created_at
+        FROM users
+        WHERE user_id = user_id;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterUser`(IN nickname VARCHAR(255), IN email VARCHAR(255), IN password VARCHAR(500), OUT user_id INT)
+BEGIN
+    DECLARE userCount INT;
+
+    -- Проверка уникальности никнейма
+    SELECT COUNT(*) INTO userCount
+    FROM users
+    WHERE nickname = nickname;
+
+    IF userCount > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Никнейм уже существует';
+    ELSE
+        -- Вставка нового пользователя
+        INSERT INTO users (nickname, email, password)
+        VALUES (nickname, email, password);
+
+        -- Получение ID нового пользователя
+        SELECT LAST_INSERT_ID() INTO user_id;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_product_to_order`(IN `p_user_id` INT, IN `p_product_id` INT, IN `p_quantity` INT, IN `p_color_id` INT, IN `p_size_id` INT)
+BEGIN
+    DECLARE v_order_id INT;
+    DECLARE v_price DECIMAL(10,2);  -- Обычная цена
+    DECLARE v_discount_price DECIMAL(10,2);  -- Скидочная цена (если есть)
+    DECLARE v_final_price DECIMAL(10,2);  -- Финальная цена для товара (с учетом скидки)
+
+    -- Шаг 1: Получаем ID активного заказа пользователя (если он есть)
+    SELECT order_id
+    INTO v_order_id
+    FROM orders
+    WHERE user_id = p_user_id AND status = 'pending'
+    LIMIT 1;
+
+    -- Если активный заказ не найден, создаем новый
+    IF v_order_id IS NULL THEN
+        INSERT INTO orders (user_id, total_price, status)
+        VALUES (p_user_id, 0, 'pending');
+        
+        SET v_order_id = LAST_INSERT_ID();
+    END IF;
+
+    -- Шаг 2: Получаем цену товара и скидочную цену (если она существует)
+    SELECT price, discount_price
+    INTO v_price, v_discount_price
+    FROM products
+    WHERE product_id = p_product_id;
+
+    -- Шаг 3: Если скидочная цена существует, применяем её. Если нет, используем обычную цену
+    IF v_discount_price IS NOT NULL THEN
+        SET v_final_price = v_discount_price;  -- Применяем скидочную цену
+    ELSE
+        SET v_final_price = v_price;  -- Используем обычную цену
+    END IF;
+
+    -- Шаг 4: Проверяем, существует ли уже такая позиция в заказе (товар с данным цветом и размером)
+    IF EXISTS (SELECT 1
+               FROM order_items
+               WHERE order_id = v_order_id
+               AND product_id = p_product_id
+               AND color_id = p_color_id
+               AND size_id = p_size_id) THEN
+        -- Если такая позиция есть, обновляем количество и пересчитываем цену для данной позиции
+        UPDATE order_items
+        SET quantity = quantity + p_quantity,
+            price = v_final_price  -- Обновляем цену товара, если она изменилась
+        WHERE order_id = v_order_id
+          AND product_id = p_product_id
+          AND color_id = p_color_id
+          AND size_id = p_size_id;
+    ELSE
+        -- Если позиции нет, добавляем новый товар
+        INSERT INTO order_items (order_id, product_id, color_id, size_id, quantity, price, discount)
+        VALUES (v_order_id, p_product_id, p_color_id, p_size_id, p_quantity, v_final_price, v_discount_price);
+    END IF;
+
+    -- Шаг 5: Обновляем общую цену заказа
+    UPDATE orders
+    SET total_price = (SELECT SUM(quantity * price)
+                       FROM order_items
+                       WHERE order_id = v_order_id)
+    WHERE order_id = v_order_id;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPaginatedProducts`(IN limit_count INT, IN offset_count INT)
+BEGIN
+    -- Если limit_count не равен NULL, применяем LIMIT и OFFSET
+    SELECT 
+        p.product_id AS id,
+        p.name AS product_name,
+        p.price,
+        p.discount_price,
+        p.cover_image_url AS cover,
+        GROUP_CONCAT(t.name) AS tags,
+        COALESCE(SUM(oi.quantity), 0) AS total_quantity_in_order  -- Количество товара в заказе
+    FROM 
+        products p
+    LEFT JOIN 
+        product_tags pt ON p.product_id = pt.product_id
+    LEFT JOIN 
+        tags t ON pt.tag_id = t.tag_id
+    LEFT JOIN 
+        order_items oi ON p.product_id = oi.product_id  -- Соединяем с заказами
+    LEFT JOIN 
+        orders o ON oi.order_id = o.order_id  -- Соединяем с заказами (если нужно, можно добавить фильтрацию по заказу)
+    GROUP BY 
+        p.product_id
+    LIMIT limit_count OFFSET offset_count;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `login_user`(
+    IN `p_email` VARCHAR(255),
+    IN `p_password` VARCHAR(500),
+    OUT `p_user_id` INT
+)
+BEGIN
+    -- Проверяем существование пользователя с указанным email и паролем
+    SELECT `user_id` 
+    INTO `p_user_id`
+    FROM `users`
+    WHERE `email` = p_email AND `password` = p_password
+    LIMIT 1;
+
+    -- Если пользователь не найден, возвращаем -1
+    IF p_user_id IS NULL THEN
+        SET p_user_id = -1;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `register_user`(
+    IN `p_nickname` VARCHAR(255),
+    IN `p_email` VARCHAR(255),
+    IN `p_password` VARCHAR(500),
+    OUT `p_user_id` INT
+)
+BEGIN
+    -- Проверяем уникальность никнейма
+    IF EXISTS (SELECT 1 FROM `users` WHERE `nickname` = p_nickname) THEN
+        SET p_user_id = -1; -- -1 означает, что никнейм уже используется
+    ELSEIF EXISTS (SELECT 1 FROM `users` WHERE `email` = p_email) THEN
+        SET p_user_id = -2; -- -2 означает, что email уже используется
+    ELSE
+        -- Добавляем нового пользователя
+        INSERT INTO `users` (`nickname`, `email`, `password`)
+        VALUES (p_nickname, p_email, p_password);
+
+        -- Возвращаем ID нового пользователя
+        SET p_user_id = LAST_INSERT_ID();
+    END IF;
+END$$
+DELIMITER ;

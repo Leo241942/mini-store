@@ -7,13 +7,9 @@ $password = '';
 try {
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
     $pdo = new PDO($dsn, $username, $password);
-
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Сообщение об успешном подключении
-    echo "<script>console.log('Соедение с бд успешно!');</script>";
 } catch (PDOException $e) {
-    // Сообщение об ошибке в консоль
-    $errorMessage = $e->getMessage();
-    echo "<script>console.error('Ошибка подключения к бд: " . addslashes($errorMessage) . "');</script>";
+    error_log('Ошибка подключения к БД: ' . $e->getMessage());
+    die(json_encode(['success' => false, 'message' => 'Ошибка подключения к базе данных.']));
 }
+?>

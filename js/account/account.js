@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Переменные для переключения вкладок
     const loginTab = document.getElementById('loginTab');
     const signupTab = document.getElementById('signupTab');
     const loginForm = document.getElementById('loginForm');
@@ -8,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchTab(activeTab, inactiveTab, activeForm, inactiveForm) {
         activeTab.classList.add('active');
         inactiveTab.classList.remove('active');
-        activeForm.classList.add('show');
-        inactiveForm.classList.remove('show');
+        activeForm.style.display = 'flex';
+        inactiveForm.style.display = 'none';
     }
 
     // Слушаем события на кнопки
@@ -21,14 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switchTab(signupTab, loginTab, signupForm, loginForm);
     });
 
-    // Начальная установка: показываем форму "Log In"
+    // Устанавливаем начальную вкладку
     switchTab(loginTab, signupTab, loginForm, signupForm);
-});
 
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
+    // Переменные для загрузки файлов
     const dropArea = document.getElementById('dropArea');
     const fileInput = document.getElementById('fileInput');
     const fileStatus = document.getElementById('fileStatus');
@@ -37,50 +34,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обработчик перетаскивания файлов
     dropArea.addEventListener('dragover', (e) => {
-        e.preventDefault(); // Разрешаем перетаскивание
-        dropArea.classList.add('dragover'); // Стиль при перетаскивании
+        e.preventDefault();
+        dropArea.classList.add('dragover');
     });
 
     dropArea.addEventListener('dragenter', (e) => {
         e.preventDefault();
-        dropArea.classList.add('dragover'); // Стиль при заходе файла в область
+        dropArea.classList.add('dragover');
     });
 
     dropArea.addEventListener('dragleave', () => {
-        dropArea.classList.remove('dragover'); // Убираем стиль, когда файл уходит
+        dropArea.classList.remove('dragover');
     });
 
-    // Обработчик события drop (перетаскивание)
     dropArea.addEventListener('drop', (e) => {
-        e.preventDefault(); // Отменяем стандартное поведение
-        dropArea.classList.remove('dragover'); // Убираем стиль после сброса
-
-        const files = e.dataTransfer.files; // Получаем перетащенные файлы
+        e.preventDefault();
+        dropArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
         if (files.length > 0) {
-            fileInput.files = files;  // Передаем файлы в скрытый input
-            showFileStatus(); // Показываем анимацию галочки и изменяем текст
+            fileInput.files = files;
+            showFileStatus();
         }
     });
 
-    // Включаем выбор файла при клике на область перетаскивания
     dropArea.addEventListener('click', () => {
-        fileInput.click(); // Открываем стандартный диалог выбора файлов
+        fileInput.click();
     });
 
-    // Обработчик выбора файла через диалоговое окно
     fileInput.addEventListener('change', () => {
-        const selectedFile = fileInput.files[0]; // Получаем выбранный файл
-        if (selectedFile) {
-            showFileStatus(); // Показываем анимацию галочки и изменяем текст
+        if (fileInput.files[0]) {
+            showFileStatus();
         }
     });
 
-    // Функция для отображения галочки и изменения текста
     function showFileStatus() {
-        // Меняем текст
         fileText.textContent = 'Файл загружен!';
-
-        // Показываем анимацию рисования галочки
         fileIcon.classList.add('show');
     }
+
+    // Обработка отправки форм
+    const handleFormSubmit = async (form) => {
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+
+            alert(result.message);
+            if (result.success) {
+                form.reset();
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке данных:', error);
+            alert('Произошла ошибка, попробуйте позже.');
+        }
+    };
+
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleFormSubmit(loginForm);
+    });
+
+    signupForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleFormSubmit(signupForm);
+    });
 });

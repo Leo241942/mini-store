@@ -1,15 +1,28 @@
 <?php 
+    // Проверяем и запускаем сессию, если она еще не активна
+    session_status() === PHP_SESSION_NONE && session_start();
+
+    // Проверяем, авторизован ли пользователь
+    $isUserLoggedIn = isset($_SESSION['user_id']);
+    echo $isUserLoggedIn ? "User ID: " . $_SESSION['user_id'] : "No user session data.";
+
     require_once '../php/classes/CartRepository.php';
     require_once '../php/connect.php';
 
-    // Создание репозитория и получение заказов
-    $CartRepository = new CartRepository($pdo);
-    // id для теста
-    $orders = $CartRepository->GetOrderDetails(2);
-    
-    // Получаем количество заказов и общую цену
-    $orderCount = count($orders);
-    $orderTotalPrice = $orderCount ? $orders[0]['order_total_price'] : 0;
+    // Инициализируем переменные по умолчанию
+    $orders = [];
+    $orderCount = 0;
+    $orderTotalPrice = 0;
+
+    // Если пользователь авторизован, получаем данные корзины
+    if ($isUserLoggedIn) {
+        $CartRepository = new CartRepository($pdo);
+        $orders = $CartRepository->GetOrderDetails($_SESSION['user_id']);
+        
+        // Подсчитываем количество и общую цену заказов
+        $orderCount = count($orders);
+        $orderTotalPrice = $orderCount ? $orders[0]['order_total_price'] : 0;
+    }
 ?>
 <header>
     <div class="container_width">
@@ -41,7 +54,7 @@
 
     <div class="product_list">
         <?php if ($orderCount === 0): ?>
-            <p>Your cart is empty.</p>
+            <p><?= $isUserLoggedIn ? "Your cart is empty." : "Please log in to view your cart." ?></p>
         <?php else: ?>
             <table>
                 <thead>

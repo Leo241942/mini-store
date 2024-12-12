@@ -1,0 +1,17 @@
+{
+    "name": "k/mini-store",
+    "autoload": {
+        "psr-4": {
+            "K\\MiniStore\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kirill",
+            "email": "kulikov4279@gmail.com"
+        }
+    ],
+    "require": {
+        "stripe/stripe-php": "^16.3"
+    }
+}
