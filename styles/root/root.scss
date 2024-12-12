@@ -73,6 +73,7 @@ main
     max-width: var(--max-width);
     width: 100%;
     margin: 0 auto; 
+    padding: 0px 20px;
     box-sizing: border-box;
 }
 
@@ -92,3 +93,11 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
 
 }
+
+@media (max-width: 1300px) {
+    :root {
+        --max-width: 100%;
+  
+    }
+  }
+  

@@ -18,8 +18,8 @@ $products = $shopRepository->getPaginatedProducts($page, $perPage);
 $totalProducts = $shopRepository->getTotalProductCount();
 
 // Вычисляем общее количество страниц
-// $totalPages = ceil($totalProducts / $perPage);
-$totalPages = ceil(200);
+$totalPages = ceil($totalProducts / $perPage);
+
 ?>
 
 <!DOCTYPE html>

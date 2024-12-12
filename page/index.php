@@ -17,8 +17,8 @@ $products = $ProductRepository->getProductCards(8);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../styles/index/index.css">
     <link rel="stylesheet" href="../styles/root/root.css">
+    <link rel="stylesheet" href="../styles/index/index.css">    
     <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">

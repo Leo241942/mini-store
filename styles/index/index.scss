@@ -82,6 +82,7 @@ main
         display: flex;
         align-items: center;
         justify-content: center;
+        box-sizing: border-box;
         gap: 50px;
 
         .item_adantages {
@@ -135,8 +136,10 @@ main
         .listing {
             width: 100%;
             display: flex;
+            justify-content: center;
             flex-wrap: wrap;
-            padding: 80px 0px;
+            padding: 80px 20px;
+            box-sizing: border-box;
             gap: 25px;
 
 
@@ -169,7 +172,9 @@ main
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     padding: 30px;
+    box-sizing: border-box;
     gap: 25px;
 
     .category_item
@@ -207,3 +212,87 @@ main
 
 
 /* adpt */
+
+@media (max-width: 1024px) {
+  .item_adantages
+  {
+    i {
+        font-size: 25px;
+    }
+
+    .title {
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .description {
+        color: #908f8d;
+        font-size: 14px;
+    }
+  }
+}
+
+
+
+@media   (max-width: 768px ) and (min-width:426px)
+{
+
+    .listing
+    {
+        gap: 15px;
+  
+    }
+
+    
+    
+    .promo_banner {
+        max-width: 300px !important;
+        padding: 20px 10px !important;
+        gap: 20px !important;
+
+      
+
+        .title {
+            font-size: 60px!important;
+            line-height: 60px!important;
+        }
+
+        .description {
+            font-size: 16px;
+        }
+
+        .btn_StartShopoing {
+            font-size: 18px;
+            border-radius: 40px;
+            padding: 15px 30px;
+           
+            
+        }
+
+}
+    
+    
+
+
+
+@media (max-width: 670px )
+{
+    .item_arrivals {
+        gap: 25px;
+        max-width: 250px !important;
+        .info
+        {
+            font-size: 19px!important ;
+        }
+
+        
+    }
+}
+
+@media (max-width: 425px )
+{
+    .container_adantages
+    {
+        flex-direction: column;
+    }
+}

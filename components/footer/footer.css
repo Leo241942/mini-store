@@ -103,4 +103,33 @@ footer .content_footer .footer_menuContainer .footer_menu .title {
 footer .content_footer .footer_menuContainer .footer_menu li a {
   font-size: 14px;
   color: #a1a1a1;
+}
+
+@media (max-width: 900px) {
+  .content_banner {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  .container_socialNetwork {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+  footer .content_footer {
+    gap: 15px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+  }
+}
+@media (max-width: 400px) {
+  .footer_menuContainer {
+    flex-direction: column !important;
+    align-content: center !important;
+  }
+  .footer_menuContainer .footer_menu {
+    align-items: center !important;
+  }
 }/*# sourceMappingURL=footer.css.map */

@@ -2,7 +2,6 @@ header {
   width: 100%;
   padding: 10px 0;
   background-color: #f8f8f8;
-  z-index: 10;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -20,6 +19,7 @@ header {
 .header_content .logo_container {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 50px;
 }
 .header_content .logo_container .logo {
@@ -64,7 +64,6 @@ header {
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 15px;
-  margin-bottom: 20px;
 }
 .cart_open .header_cart .title {
   font-size: 25px;
@@ -152,4 +151,47 @@ header {
 .blackout.active {
   visibility: visible;
   opacity: 1;
+}
+
+@media (max-width: 1300px) {
+  .header_content {
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .cart_open {
+    max-width: 95% !important;
+  }
+  .title {
+    font-size: 20px !important;
+  }
+  .count {
+    font-size: 14px !important;
+    width: 25px !important;
+    height: 25px !important;
+  }
+  .product_list {
+    gap: 10px !important;
+  }
+  .product_list table {
+    border-collapse: separate;
+  }
+  .product_list table th, .product_list table td {
+    text-align: center !important;
+    padding: 5px !important;
+  }
+}
+@media (max-width: 500px) {
+  .product_list {
+    gap: 10px !important;
+  }
+  .product_list table {
+    border-collapse: separate;
+  }
+  .product_list table th, .product_list table td {
+    font-size: 10px !important;
+  }
 }/*# sourceMappingURL=header.css.map */
