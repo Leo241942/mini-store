@@ -103,7 +103,7 @@ $products = $ProductRepository->getProductCards(8);
 
     <?php require_once "../components/footer/footer.php"; ?>
 
-    <script src="../js/index/index.js"></script>
+    <script src="../js/header/header.js"></script>
 </body>
 
 </html>

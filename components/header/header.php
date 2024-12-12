@@ -1,28 +1,28 @@
-<?php 
-    // Проверяем и запускаем сессию, если она еще не активна
-    session_status() === PHP_SESSION_NONE && session_start();
+<?php
+// Проверяем и запускаем сессию, если она еще не активна
+session_status() === PHP_SESSION_NONE && session_start();
 
-    // Проверяем, авторизован ли пользователь
-    $isUserLoggedIn = isset($_SESSION['user_id']);
-    echo $isUserLoggedIn ? "User ID: " . $_SESSION['user_id'] : "No user session data.";
+// Проверяем, авторизован ли пользователь
+$isUserLoggedIn = isset($_SESSION['user_id']);
+echo $isUserLoggedIn ? "User ID: " . $_SESSION['user_id'] : "No user session data.";
 
-    require_once '../php/classes/CartRepository.php';
-    require_once '../php/connect.php';
+require_once '../php/classes/CartRepository.php';
+require_once '../php/connect.php';
 
-    // Инициализируем переменные по умолчанию
-    $orders = [];
-    $orderCount = 0;
-    $orderTotalPrice = 0;
+// Инициализируем переменные по умолчанию
+$orders = [];
+$orderCount = 0;
+$orderTotalPrice = 0;
 
-    // Если пользователь авторизован, получаем данные корзины
-    if ($isUserLoggedIn) {
-        $CartRepository = new CartRepository($pdo);
-        $orders = $CartRepository->GetOrderDetails($_SESSION['user_id']);
-        
-        // Подсчитываем количество и общую цену заказов
-        $orderCount = count($orders);
-        $orderTotalPrice = $orderCount ? $orders[0]['order_total_price'] : 0;
-    }
+// Если пользователь авторизован, получаем данные корзины
+if ($isUserLoggedIn) {
+    $CartRepository = new CartRepository($pdo);
+    $orders = $CartRepository->GetOrderDetails($_SESSION['user_id']);
+    
+    // Подсчитываем количество и общую цену заказов
+    $orderCount = count($orders);
+    $orderTotalPrice = $orderCount ? $orders[0]['order_total_price'] : 0;
+}
 ?>
 <header>
     <div class="container_width">
@@ -70,7 +70,7 @@
                 </thead>
                 <tbody>
                     <?php foreach ($orders as $order): ?>
-                        <tr class="item_product">
+                        <tr>
                             <td><?= htmlspecialchars($order['product_name'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($order['color_name'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($order['size_name'], ENT_QUOTES, 'UTF-8') ?></td>
@@ -90,10 +90,47 @@
     </div>
 
     <?php if ($orderCount > 0): ?>
-        <form action="#">
+        <!-- Кнопка для перехода к оплате -->
+        <form id="checkout-form" action="javascript:void(0);">
             <button class="btn_continue">Continue to Checkout</button>
         </form>
     <?php endif; ?>
 </div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    // Подключаем Stripe с помощью вашего publishable key
+    var stripe = Stripe('pk_test_51QPlBlDsJ33hFGiMkfrI0BGP4del6CeE2a7YNFxllLAO7lwaWqIbhcTeg0gZMHbtifik9FBCWcyO6Q7BNBzHPq1600C9hpQg0t');  // Используйте ваш Publishable Key
+
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Отправляем итоговую сумму на сервер для создания сессии Stripe
+        fetch('../php/payments/create-checkout-session.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                orderTotalPrice: <?= $orderTotalPrice ?>  // Отправляем итоговую сумму в запросе
+            })
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            if (data.sessionId) {
+                // Перенаправляем пользователя на Stripe для завершения оплаты
+                return stripe.redirectToCheckout({ sessionId: data.sessionId });
+            } else {
+                alert("Error creating checkout session");
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+            alert("An error occurred, please try again.");
+        });
+    });
+</script>
 
 <div class="blackout" id="blackout"></div>

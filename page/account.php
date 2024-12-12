@@ -71,7 +71,7 @@ require_once '../php/connect.php';
 
     <?php require_once "../components/footer/footer.php"; ?>
 
-    <script src="../js/index/index.js"></script>
+    <script src="../js/header/header.js"></script>
     <script src="../js/account/account.js"></script>
 </body>
 </html>
