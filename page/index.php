@@ -23,12 +23,19 @@ $products = $ProductRepository->getProductCards(8);
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
     <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
+    <!--library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+
 </head>
 
 <body>
+
+
     <?php require_once "../components/header/header.php"; ?>
 
     <main>
+
         <section class="start_shopping">
             <div class="container_width">
                 <div class="promo_banner">
@@ -39,7 +46,7 @@ $products = $ProductRepository->getProductCards(8);
             </div>
         </section>
 
-        <section class="our_advantages">
+        <section class="our_advantages" data-aos="fade-right">
             <div class="container_width">
                 <div class="container_adantages">
                     <?php 
@@ -61,7 +68,7 @@ $products = $ProductRepository->getProductCards(8);
             </div>
         </section>
 
-        <section class="new_arrivals">
+        <section class="new_arrivals" data-aos="fade-up">
             <div class="container_width">
                 <p class="title">New Arrivals</p>
                 <div class="listing_container">
@@ -84,7 +91,7 @@ $products = $ProductRepository->getProductCards(8);
             </div>
         </section>
 
-        <section class="category">
+        <section class="category" data-aos="fade-up">
             <?php 
             $categories = [
                 ['img' => 'category1.jpg', 'title' => 'Printed T-Shirts'],
@@ -104,6 +111,7 @@ $products = $ProductRepository->getProductCards(8);
     <?php require_once "../components/footer/footer.php"; ?>
 
     <script src="../js/header/header.js"></script>
+
 </body>
 
 </html>

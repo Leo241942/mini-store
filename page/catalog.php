@@ -9,7 +9,7 @@ $shopRepository = new ShopRepository($pdo);
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // Количество товаров на странице
-$perPage = 8;
+$perPage = 16;
 
 // Получаем товары для текущей страницы
 $products = $shopRepository->getPaginatedProducts($page, $perPage);
@@ -31,16 +31,20 @@ $totalPages = ceil($totalProducts / $perPage);
     <title>Catalog</title>
     <link rel="stylesheet" href="../styles/catalog/catalog.css">
     <link rel="stylesheet" href="../styles/root/root.css">
+     <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
     <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
+    <!-- library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
 </head>
 
 <body>
     <?php require_once "../components/header/header.php"; ?>
 
     <main>
-        <section class="catalog">
+        <section class="catalog" >
             <div class="container_width">
                 <div class="listing_container">
                     <div class="header_listing">
@@ -79,6 +83,5 @@ $totalPages = ceil($totalProducts / $perPage);
 
     <?php require_once "../components/footer/footer.php"; ?>
 
-    <script src="../js/header/header.js"></script>
 </body>
 </html>

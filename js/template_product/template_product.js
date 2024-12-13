@@ -223,8 +223,14 @@ setActiveButtons('.control-element.size .controls-container', '.size-btn');
     });
   }
   
-  // Вызываем функцию после загрузки страницы, чтобы она работала с уже существующими инпутами
-  document.addEventListener('DOMContentLoaded', restrictInputValue);
+
+
+
+
+
+
+
+
   
   document.addEventListener("DOMContentLoaded", function() {
     let selectedColorId = '';
@@ -249,7 +255,6 @@ setActiveButtons('.control-element.size .controls-container', '.size-btn');
     // Устанавливаем количество по умолчанию равным 1
     const quantityInput = document.getElementById('quantity_product');
     quantityInput.value = 1;
-
 
     // Обработчик выбора цвета
     colorButtons.forEach(button => {
@@ -294,14 +299,35 @@ setActiveButtons('.control-element.size .controls-container', '.size-btn');
         .then(response => response.json()) // Ожидаем, что сервер вернет JSON
         .then(data => {
             if (data.success) {
-                alert('Товар добавлен в корзину!');
+                Toastify({
+                    text: "Товар добавлен в корзину!",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    className: "info",
+                    duration: 3000, // Продолжительность отображения уведомления
+                    gravity: "top", // Размещение вверху
+                    position: "left" // Уведомление слева
+                }).showToast();
             } else {
-                alert('Не удалось добавить товар в корзину.');
+                Toastify({
+                    text: "Не удалось добавить товар в корзину.",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc3a0)",
+                    className: "error",
+                    duration: 3000, // Продолжительность отображения уведомления
+                    gravity: "top", // Размещение вверху
+                    position: "left" // Уведомление слева
+                }).showToast();
             }
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            alert('Произошла ошибка при добавлении товара в корзину.');
+            Toastify({
+                text: "Произошла ошибка при добавлении товара в корзину.",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc3a0)",
+                className: "error",
+                duration: 3000, // Продолжительность отображения уведомления
+                gravity: "top", // Размещение вверху
+                position: "left" // Уведомление слева
+            }).showToast();
         });
     });
 });

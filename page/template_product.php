@@ -53,9 +53,14 @@ $productColors = $ProductRepository->GetProductColors($product_id);
     <title>Product Page</title>
     <link rel="stylesheet" href="../styles/template_product/template_product.css">
     <link rel="stylesheet" href="../styles/root/root.css">
+    <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
     <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
+    <!-- animation -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+
 </head>
 
 <body>
@@ -67,7 +72,7 @@ $productColors = $ProductRepository->GetProductColors($product_id);
                 <div class="product-info">
                     <div class="info-container">
                         <!-- Слайдер изображений -->
-                        <div class="slider">
+                        <div class="slider"  data-aos="fade-right" data-aos-delay="200"  data-aos-duration="900">
                             <div class="sliders">
                                 <?php if ($productImages): ?>
                                     <?php foreach ($productImages as $index => $image): ?>
@@ -81,7 +86,7 @@ $productColors = $ProductRepository->GetProductColors($product_id);
                         </div>
 
                         <!-- Характеристики продукта -->
-                        <div class="characteristics">
+                        <div class="characteristics" data-aos="fade-left" data-aos-delay="300"  data-aos-duration="900">
                             <h1 class="title"><?= htmlspecialchars($product_name) ?></h1>
                             <div class="rating">
                                 <div class="stars">
@@ -130,22 +135,27 @@ $productColors = $ProductRepository->GetProductColors($product_id);
 
                                 <!-- Количество и кнопки -->
                                 <div class="control-element cart">
-                                    <p class="title"><?= htmlspecialchars($stock_quantity) ?> in stock</p>
-                                    <div class="controls-container">
-                                        <div class="count-container">
-                                            <button class="increase">+</button>
-                                            <input type="number" value="1" min="1" max="<?= htmlspecialchars($stock_quantity) ?>" id="quantity_product">
-                                            <button class="decrease">−</button>
+                                    <?php if (empty($productColors) || empty($productSizes)): ?>
+                                        <p class="no-data">Sorry, this product is currently unavailable for order due to lack of sizes or colors.</p>
+                                    <?php else: ?>
+                                        <p class="title"><?= htmlspecialchars($stock_quantity) ?> in stock</p>
+                                        <div class="controls-container">
+                                            <div class="count-container">
+                                                <button class="increase">+</button>
+                                                <input type="number" value="1" min="1" max="<?= htmlspecialchars($stock_quantity) ?>" id="quantity_product">
+                                                <button class="decrease">−</button>
+                                            </div>
+                                            <!-- Если пользователь авторизован -->
+                                            <?php if ($user_id): ?>
+                                                <button id="add_to_cart">Add to Cart</button>
+                                                <button><i class="ri-heart-add-line"></i></button>
+                                            <?php else: ?>
+                                                <p>Please <a href="login.php">log in</a> to add to cart or wishlist.</p>
+                                            <?php endif; ?>
                                         </div>
-                                        <!-- Если пользователь авторизован -->
-                                        <?php if ($user_id): ?>
-                                            <button id="add_to_cart">Add to Cart</button>
-                                            <button><i class="ri-heart-add-line"></i></button>
-                                        <?php else: ?>
-                                            <p>Please <a href="login.php">log in</a> to add to cart or wishlist.</p>
-                                        <?php endif; ?>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
+
                             </div>
 
                             <ul class="properties">
@@ -168,8 +178,8 @@ $productColors = $ProductRepository->GetProductColors($product_id);
                     <?php endif; ?>
 
                     <div class="full_description">
-                        <p class="title">Full description</p>
-                        <p class="text_description"><?= htmlspecialchars($full_description) ?></p>
+                        <p class="title" data-aos="fade-up" data-aos-delay="400"  data-aos-duration="900">Full description</p>
+                        <p class="text_description" data-aos="fade-up" data-aos-delay="700"  data-aos-duration="900"><?= htmlspecialchars($full_description) ?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, sunt porro quae est modi voluptas molestias deleniti quas maxime dolore! Laborum odio porro sint quibusdam, illum non consectetur eveniet neque harum cumque nesciunt labore praesentium dolor in ipsa sed animi rem excepturi itaque, cupiditate explicabo natus iste ab fugiat. Saepe omnis dignissimos incidunt ducimus laudantium natus fugit sunt eaque reprehenderit dolor atque explicabo, veniam perferendis architecto, impedit similique, exercitationem numquam assumenda eos ipsa nemo alias repellat laboriosam ipsam. Cupiditate, illo! Earum eaque possimus repellat libero, facere quo et inventore sint adipisci, voluptas amet beatae maxime recusandae nesciunt nam non temporibus illum vitae laudantium est vel! Quos, dolorem numquam. Nostrum numquam accusamus in enim porro nobis voluptates vero alias amet impedit harum labore quasi at illum placeat obcaecati sit, sequi dignissimos quo laudantium. Odit reiciendis sint doloremque, laudantium necessitatibus quibusdam quidem repudiandae nostrum possimus sed in ipsum, consequuntur quasi soluta voluptas aperiam, magni inventore molestiae repellendus amet reprehenderit tempore! Ad neque voluptatibus tempore eaque sed maxime! Repellat, doloribus sunt quos facilis mollitia architecto velit dicta atque nam amet rerum? Hic inventore officia ipsum aliquam culpa magni repellat corporis facere voluptatum, velit asperiores quia aliquid rerum consectetur, repellendus maxime veniam. Eligendi, voluptatibus.</p>
                     </div>
                 </div>
             </div>
@@ -180,6 +190,10 @@ $productColors = $ProductRepository->GetProductColors($product_id);
 
     <script src="../js/template_product/template_product.js"></script>
     <script src="../js/header/header.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 
 </html>

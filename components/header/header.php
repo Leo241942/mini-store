@@ -4,7 +4,7 @@ session_status() === PHP_SESSION_NONE && session_start();
 
 // Проверяем, авторизован ли пользователь
 $isUserLoggedIn = isset($_SESSION['user_id']);
-echo $isUserLoggedIn ? "User ID: " . $_SESSION['user_id'] : "No user session data.";
+// echo $isUserLoggedIn ? "User ID: " . $_SESSION['user_id'] : "No user session data.";
 
 require_once '../php/classes/CartRepository.php';
 require_once '../php/connect.php';
@@ -24,7 +24,7 @@ if ($isUserLoggedIn) {
     $orderTotalPrice = $orderCount ? $orders[0]['order_total_price'] : 0;
 }
 ?>
-<header>
+<header id = "header">
     <div class="container_width">
         <div class="header_content">
             <div class="logo_container">
@@ -54,7 +54,9 @@ if ($isUserLoggedIn) {
 
     <div class="product_list">
         <?php if ($orderCount === 0): ?>
-            <p><?= $isUserLoggedIn ? "Your cart is empty." : "Please log in to view your cart." ?></p>
+            
+            <p><?= $isUserLoggedIn ? "Your cart is empty.Don't have all the goods? Refresh the page" : "Please log in to view your cart." ?></p>
+
         <?php else: ?>
             <table>
                 <thead>
@@ -85,7 +87,7 @@ if ($isUserLoggedIn) {
             <div class="total_price">
                 <p class="title">Order Total (USD)</p>
                 <p class="price"><?= $orderTotalPrice ?>$</p>
-            </div>
+                </div>
         <?php endif; ?>
     </div>
 
@@ -95,6 +97,7 @@ if ($isUserLoggedIn) {
             <button class="btn_continue">Continue to Checkout</button>
         </form>
     <?php endif; ?>
+
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>

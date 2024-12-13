@@ -2,19 +2,20 @@
 // process_cart.php
 session_status() === PHP_SESSION_NONE && session_start();
 
-
 $user_id = $_SESSION['user_id'];
 
 require_once '../connect.php';
 require_once '../classes/CartRepository.php'; // Подключаем класс CartRepository
 
+header('Content-Type: application/json'); // Устанавливаем заголовок для JSON
+
 // Проверяем, является ли user_id числом
 if (!is_numeric($user_id)) {
-    echo json_encode(['success' => false, 'message' => 'Некорректный ID пользователя,войдите или зарегестрируйстесь']);
+    echo json_encode(['success' => false, 'message' => 'Некорректный ID пользователя. Войдите или зарегистрируйтесь.']);
     exit;
 }
 
-// Получаем параметры из POST запроса
+// Получаем параметры из POST-запроса
 $colorId = isset($_POST['color']) ? (int)$_POST['color'] : null;
 $sizeId = isset($_POST['size']) ? (int)$_POST['size'] : null;
 $productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;
@@ -27,9 +28,12 @@ if ($colorId && $sizeId && $productId && $userId) {
     
     // Вызов метода addToCart для добавления товара в корзину
     $result = $cartRepository->addToCart($userId, $productId, $colorId, $sizeId, $quantity);
-    
-    // Возвращаем результат на фронтенд
+
+    // Успешный ответ сервера
     echo json_encode($result);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Ошибка при добавлении товара в корзину.']);
+    exit;
 }
+
+// Ответ в случае некорректных данных
+echo json_encode(['success' => false, 'message' => 'Ошибка при добавлении товара в корзину.']);
+exit;

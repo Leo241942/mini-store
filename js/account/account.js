@@ -70,6 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function showFileStatus() {
         fileText.textContent = 'Файл загружен!';
         fileIcon.classList.add('show');
+        // Уведомление о загрузке файла
+        Toastify({
+            text: "Файл успешно загружен!",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "info",
+            duration: 3000, // Продолжительность отображения уведомления
+            gravity: "top", // Размещение вверху
+            position: "left" // Уведомление слева
+        }).showToast();
     }
 
     // Обработка отправки форм
@@ -83,9 +92,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
 
-            alert(result.message);
             if (result.success) {
-                form.reset();
+                // Показываем успешное уведомление
+                Toastify({
+                    text: result.message,
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    className: "info",
+                    duration: 3000, // Продолжительность отображения уведомления
+                    gravity: "top", // Размещение вверху
+                    position: "left" // Уведомление слева
+                }).showToast();
+
+                // Перезагружаем страницу через 1.5 секунды
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            } else {
+                // Показываем ошибку
+                Toastify({
+                    text: result.message,
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc3a0)",
+                    className: "error",
+                    duration: 3000, // Продолжительность отображения уведомления
+                    gravity: "top", // Размещение вверху
+                    position: "left" // Уведомление слева
+                }).showToast();
             }
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
@@ -93,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Обработчики отправки форм для логина и регистрации
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
         handleFormSubmit(loginForm);

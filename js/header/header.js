@@ -27,4 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
+function reloadBlock(url, blockId) {
+    // Делаем запрос на сервер для получения HTML
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка загрузки: ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(html => {
+            // Вставляем полученный HTML в указанный блок
+            document.getElementById(blockId).innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}

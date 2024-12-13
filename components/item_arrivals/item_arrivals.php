@@ -1,4 +1,4 @@
-<div class="item_arrivals">
+<div class="item_arrivals" data-aos="fade-up" data-aos-delay="100"  data-aos-duration="400">
     <!-- Блок изображения и управления -->
     <div class="img_container">
         <!-- Выводим изображение товара -->

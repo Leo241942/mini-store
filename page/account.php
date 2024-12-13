@@ -13,8 +13,13 @@ require_once '../php/connect.php';
     <title>Account</title>
     <link rel="stylesheet" href="../styles/account/account.css">
     <link rel="stylesheet" href="../styles/root/root.css">
+     <!-- styles components -->
     <link rel="stylesheet" href="../components/header/header.css">
     <link rel="stylesheet" href="../components/footer/footer.css">
+    <link rel="stylesheet" href="../components/item_arrivals/item_arrivals.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+
 </head>
 
 <body>
@@ -25,7 +30,7 @@ require_once '../php/connect.php';
             <div class="container_width">
                 <div class="header_account">
                     <?php if (!isset($_SESSION['user_id'])): ?>
-                        <button id="loginTab" class="active">Log In</button>
+                        <button id="loginTab" class="active" >Log In</button>
                         <button id="signupTab">Sign Up</button>
                     <?php endif; ?>
                 </div>
@@ -65,13 +70,10 @@ require_once '../php/connect.php';
             </div>
         </section>
 
-   
-
     </main>
 
     <?php require_once "../components/footer/footer.php"; ?>
-
-    <script src="../js/header/header.js"></script>
     <script src="../js/account/account.js"></script>
+
 </body>
 </html>

@@ -1,5 +1,4 @@
 <?php
-
 session_start(); // Стартуем сессию
 header('Content-Type: application/json');
 
@@ -13,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
 
+        // Логика для авторизации (проверки пользователя)
         $userId = $userRepository->loginUser($email, $password);
 
         if ($userId > 0) {

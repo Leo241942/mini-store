@@ -12,7 +12,8 @@ class UserRepository
     /**
      * Регистрация нового пользователя.
      */
-    public function registerUser($nickname, $email, $password, $avatarUrl = null) {
+    public function registerUser($nickname, $email, $password, $avatarUrl = null)
+    {
         $sql = "SELECT 1 FROM users WHERE nickname = :nickname";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['nickname' => $nickname]);
@@ -39,19 +40,25 @@ class UserRepository
 
         return $this->pdo->lastInsertId(); // Возвращаем ID нового пользователя
     }
+
     /**
      * Авторизация пользователя.
      */
     public function loginUser(string $email, string $password): int
     {
-        $sql = "CALL login_user(:email, :password, @user_id)";
+        $sql = "SELECT user_id, password FROM users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
         $stmt->execute();
 
-        $result = $this->pdo->query("SELECT @user_id AS user_id")->fetch(PDO::FETCH_ASSOC);
-        return (int)$result['user_id'];
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Проверяем, совпадает ли пароль
+        if ($user && password_verify($password, $user['password'])) {
+            return (int) $user['user_id']; // Возвращаем ID пользователя
+        }
+
+        return -1; // Неверный email или пароль
     }
 }
 ?>

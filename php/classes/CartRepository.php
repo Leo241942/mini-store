@@ -72,61 +72,25 @@ class CartRepository
   public function addToCart($userId, $productId, $colorId, $sizeId, $quantity)
   {
       try {
-          // Сначала проверим, есть ли уже заказ для пользователя (корзина)
-          $stmt = $this->pdo->prepare("SELECT order_id FROM orders WHERE user_id = :user_id AND status = 'pending'");
-          $stmt->execute(['user_id' => $userId]);
-          $order = $stmt->fetch(PDO::FETCH_ASSOC);
-
-          if (!$order) {
-              // Если заказа нет, создаем новый
-              echo "Заказ не найден. Создаем новый заказ.<br>";
-              $stmt = $this->pdo->prepare("INSERT INTO orders (user_id, total_price, status) VALUES (:user_id, 0, 'pending')");
-              $stmt->execute(['user_id' => $userId]);
-              $orderId = $this->pdo->lastInsertId();
-              echo "Новый заказ создан. ID заказа: $orderId<br>";
-          } else {
-              $orderId = $order['order_id'];
-              echo "Найден существующий заказ с ID: $orderId<br>";
-          }
-
-          // Получаем цену товара для добавления в заказ
-          $stmt = $this->pdo->prepare("SELECT price, discount_price FROM products WHERE product_id = :product_id");
-          $stmt->execute(['product_id' => $productId]);
-          $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-          if (!$product) {
-              echo "Товар с ID $productId не найден!<br>";
-              return ['success' => false, 'message' => 'Товар не найден'];
-          }
-
-          $price = $product['discount_price'] ? $product['discount_price'] : $product['price'];
-          $totalPrice = $price * $quantity;
-
-          // Добавляем товар в таблицу order_items
-          $stmt = $this->pdo->prepare("
-              INSERT INTO order_items (order_id, product_id, color_id, size_id, quantity, price)
-              VALUES (:order_id, :product_id, :color_id, :size_id, :quantity, :price)
-          ");
+          // Вызываем хранимую процедуру add_product_to_order
+          $stmt = $this->pdo->prepare("CALL add_product_to_order(:user_id, :product_id, :color_id, :size_id, :quantity)");
           $stmt->execute([
-              'order_id' => $orderId,
+              'user_id' => $userId,
               'product_id' => $productId,
               'color_id' => $colorId,
               'size_id' => $sizeId,
-              'quantity' => $quantity,
-              'price' => $price
+              'quantity' => $quantity
           ]);
-          echo "Товар добавлен в корзину.<br>";
-
-          // Обновляем общую цену заказа
-          $this->updateOrderTotal($orderId);
-
+  
+          // Проверяем, была ли процедура выполнена успешно
           return ['success' => true, 'message' => 'Товар добавлен в корзину'];
       } catch (Exception $e) {
-          echo "Ошибка: " . $e->getMessage() . "<br>";
+          // Логируем ошибку и возвращаем сообщение
+          error_log("Ошибка добавления товара в корзину: " . $e->getMessage());
           return ['success' => false, 'message' => 'Произошла ошибка при добавлении товара в корзину'];
       }
   }
-
+  
   // Метод для обновления общей цены заказа
   private function updateOrderTotal($orderId)
   {

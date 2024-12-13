@@ -77,6 +77,45 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
 }
 
+/* Устанавливаем позиционирование уведомлений по центру слева */
+.toastify {
+  position: fixed !important;
+  top: 50%; /* Размещаем по центру экрана по вертикали */
+  left: 20px; /* Расстояние от левой грани */
+  transform: translateY(-50%); /* Центрируем по вертикали */
+  z-index: 9999; /* Чтобы уведомление было поверх других элементов */
+}
+
+/* Добавляем анимацию появления */
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px) translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-50%);
+  }
+}
+/* Добавляем анимацию скрытия */
+@keyframes toastOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) translateY(-50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-20px) translateY(-50%);
+  }
+}
+.toastify.toastify-info {
+  animation: toastIn 0.5s ease-out forwards, toastOut 0.5s ease-in forwards;
+}
+
+.toastify.toastify-error {
+  animation: toastIn 0.5s ease-out forwards, toastOut 0.5s ease-in forwards;
+}
+
 @media (max-width: 1300px) {
   :root {
     --max-width: 100%;

@@ -12,21 +12,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $nickname = $_POST['nickname'];
         $email = $_POST['email'];
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $password = $_POST['password'];
 
-        $newUserId = $userRepository->registerUser($nickname, $email, $password);
+        // Хешируем пароль перед сохранением
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-        if ($newUserId > 0) {
-            $_SESSION['user_id'] = $newUserId; // Сохраняем userId в сессии
+        // Регистрация пользователя
+        $userId = $userRepository->registerUser($nickname, $email, $passwordHash);
+
+        if ($userId > 0) {
+            $_SESSION['user_id'] = $userId; // Сохраняем userId в сессии
             echo json_encode([
                 'success' => true,
                 'message' => 'Пользователь успешно зарегистрирован',
-                'userId' => $newUserId
+                'userId' => $userId
             ]);
-        } elseif ($newUserId === -1) {
-            echo json_encode(['success' => false, 'message' => 'Никнейм уже используется']);
-        } elseif ($newUserId === -2) {
-            echo json_encode(['success' => false, 'message' => 'Email уже используется']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Ошибка регистрации']);
         }
     } catch (Exception $e) {
         error_log('Ошибка регистрации: ' . $e->getMessage());
