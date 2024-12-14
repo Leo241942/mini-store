@@ -60,5 +60,19 @@ class UserRepository
 
         return -1; // Неверный email или пароль
     }
+
+    public function getUserInfo(int $userId): ?array
+    {
+        // Вызываем хранимую процедуру для получения информации о пользователе
+        $sql = "CALL getUserInfo(:user_id)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['user_id' => $userId]);
+
+        // Получаем данные о пользователе
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Возвращаем данные, если пользователь найден
+        return $user ? $user : null;
+    }
 }
 ?>

@@ -3,11 +3,7 @@
     <div class="img_container">
         <!-- Выводим изображение товара -->
         <img src="../image/<?= htmlspecialchars($cover) ?>" alt="<?= htmlspecialchars($name) ?>">
-
-        <!-- Выводим тег, если он есть -->
-        <?php if ($tags): ?>
-            <div class="tag"><?= htmlspecialchars($tags) ?></div>
-        <?php endif; ?>
+      
 
         <div class="controls">
             <!-- Ссылка на страницу товара -->
